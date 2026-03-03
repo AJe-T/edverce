@@ -1,0 +1,290 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+:root {
+  height: 100%;
+}
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 215 28% 17%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 28% 17%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 28% 17%;
+
+    --primary: 224 64% 33%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 217 91% 60%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 210 32% 94%;
+    --muted-foreground: 215 16% 42%;
+
+    --accent: 210 32% 94%;
+    --accent-foreground: 215 28% 17%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 30% 88%;
+    --input: 214 30% 88%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 96%;
+
+    --card: 223 41% 16%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 223 41% 16%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 224 64% 45%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 217 91% 60%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 223 29% 22%;
+    --muted-foreground: 216 15% 70%;
+
+    --accent: 223 29% 22%;
+    --accent-foreground: 210 40% 96%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 223 29% 26%;
+    --input: 223 29% 26%;
+    --ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-outfit), sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: var(--font-outfit), sans-serif;
+  }
+}
+
+.marketing-grid-bg {
+  background-image:
+    linear-gradient(to right, hsl(var(--border) / 0.45) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--border) / 0.45) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+.glass-panel {
+  backdrop-filter: blur(12px);
+  background: hsl(var(--card) / 0.82);
+  transform: translateZ(0);
+  will-change: transform, backdrop-filter;
+}
+
+.tilt-3d {
+  transform-style: preserve-3d;
+  transition:
+    transform 260ms ease,
+    box-shadow 260ms ease;
+}
+
+.tilt-3d:hover {
+  transform: rotateX(5deg) rotateY(-5deg) translateY(-4px);
+  box-shadow: 0 25px 45px -22px hsl(var(--primary) / 0.45);
+}
+
+.float-soft {
+  animation: float-soft 5.2s ease-in-out infinite;
+}
+
+.float-soft-delay {
+  animation: float-soft 6.2s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
+.pulse-glow {
+  animation: pulse-glow 3.5s ease-in-out infinite;
+}
+
+.reveal-up {
+  animation: reveal-up 700ms ease both;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+.reveal-up-delay {
+  animation: reveal-up 900ms ease both;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+.parallax-strip {
+  background-image: linear-gradient(
+    105deg,
+    hsl(var(--primary) / 0.08) 0%,
+    hsl(var(--secondary) / 0.08) 35%,
+    hsl(var(--background)) 70%
+  );
+  background-attachment: scroll; /* Fixed is often terribly slow on mobile, scroll is smoother */
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 hsl(var(--primary) / 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 10px hsl(var(--primary) / 0);
+  }
+}
+
+@keyframes reveal-up {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@media (pointer: fine) {
+  body.custom-cursor-enabled {
+    cursor: none;
+  }
+
+  body.custom-cursor-enabled a,
+  body.custom-cursor-enabled button,
+  body.custom-cursor-enabled input,
+  body.custom-cursor-enabled textarea,
+  body.custom-cursor-enabled select,
+  body.custom-cursor-enabled summary,
+  body.custom-cursor-enabled label,
+  body.custom-cursor-enabled [role="button"] {
+    cursor: none;
+  }
+
+  .custom-cursor,
+  .custom-cursor-ring {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999999;
+    transform: translate3d(-100px, -100px, 0);
+    transition: opacity 0.14s ease;
+    will-change: transform, opacity;
+  }
+
+  .custom-cursor {
+    width: 7px;
+    height: 7px;
+    margin-left: -3.5px;
+    margin-top: -3.5px;
+    border-radius: 9999px;
+    background: hsl(var(--secondary));
+    box-shadow: 0 0 0 1px hsl(var(--background));
+  }
+
+  .custom-cursor-ring {
+    width: 26px;
+    height: 26px;
+    margin-left: -13px;
+    margin-top: -13px;
+    border-radius: 9999px;
+    border: 1px solid hsl(var(--primary) / 0.45);
+    background: hsl(var(--primary) / 0.08);
+  }
+
+  .custom-cursor-hover .custom-cursor {
+    width: 8px;
+    height: 8px;
+    margin-left: -4px;
+    margin-top: -4px;
+  }
+
+  .custom-cursor-hover .custom-cursor-ring {
+    width: 32px;
+    height: 32px;
+    margin-left: -16px;
+    margin-top: -16px;
+    border-color: hsl(var(--secondary) / 0.55);
+    background: hsl(var(--secondary) / 0.12);
+  }
+
+  .custom-cursor-active .custom-cursor {
+    width: 6px;
+    height: 6px;
+    margin-left: -3px;
+    margin-top: -3px;
+  }
+
+  .custom-cursor-active .custom-cursor-ring {
+    width: 22px;
+    height: 22px;
+    margin-left: -11px;
+    margin-top: -11px;
+  }
+
+  .custom-cursor-hidden .custom-cursor,
+  .custom-cursor-hidden .custom-cursor-ring {
+    opacity: 0;
+  }
+
+  .custom-cursor-native body.custom-cursor-enabled,
+  .custom-cursor-native body.custom-cursor-enabled a,
+  .custom-cursor-native body.custom-cursor-enabled button,
+  .custom-cursor-native body.custom-cursor-enabled input,
+  .custom-cursor-native body.custom-cursor-enabled textarea,
+  .custom-cursor-native body.custom-cursor-enabled select,
+  .custom-cursor-native body.custom-cursor-enabled summary,
+  .custom-cursor-native body.custom-cursor-enabled label,
+  .custom-cursor-native body.custom-cursor-enabled [role="button"] {
+    cursor: auto;
+  }
+
+  .custom-cursor-native .custom-cursor,
+  .custom-cursor-native .custom-cursor-ring {
+    opacity: 0;
+  }
+}
+
+.ql-container {
+  font-size: 16px !important;
+}
+
+@import "~@uploadthing/react/styles.css";
