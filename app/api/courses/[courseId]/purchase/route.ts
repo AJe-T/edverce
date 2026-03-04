@@ -6,7 +6,7 @@ import { getPhonePeOrderStatus } from "@/lib/phonepe";
 
 export async function GET(
   req: Request,
-  { params }: { params: { courseId: string } }
+  { params }: { params: { courseId: string } },
 ) {
   try {
     const user = await currentUser();
@@ -36,7 +36,9 @@ export async function GET(
     const paymentStatus = await getPhonePeOrderStatus(merchantOrderId);
     const paid =
       paymentStatus.state === "COMPLETED" ||
-      paymentStatus.paymentDetails?.some((detail) => detail.state === "COMPLETED") ||
+      paymentStatus.paymentDetails?.some(
+        (detail) => detail.state === "COMPLETED",
+      ) ||
       false;
 
     const statusQuery = new URL(`${appUrl}/courses/${params.courseId}`);
@@ -47,31 +49,35 @@ export async function GET(
       return NextResponse.redirect(statusQuery);
     }
 
-    if (paymentStatus.metaInfo?.udf1 && paymentStatus.metaInfo.udf1 !== user.id) {
+    if (
+      paymentStatus.metaInfo?.udf1 &&
+      paymentStatus.metaInfo.udf1 !== user.id
+    ) {
       return new NextResponse("Forbidden", { status: 403 });
     }
 
-    if (paymentStatus.metaInfo?.udf2 && paymentStatus.metaInfo.udf2 !== params.courseId) {
+    if (
+      paymentStatus.metaInfo?.udf2 &&
+      paymentStatus.metaInfo.udf2 !== params.courseId
+    ) {
       return new NextResponse("Forbidden", { status: 403 });
     }
 
-    const existingPurchase = await db.purchase.findUnique({
+    await db.purchase.upsert({
       where: {
         userId_courseId: {
           userId: user.id,
           courseId: params.courseId,
         },
       },
+      create: {
+        courseId: params.courseId,
+        userId: user.id,
+      },
+      update: {
+        createdAt: new Date(),
+      },
     });
-
-    if (!existingPurchase) {
-      await db.purchase.create({
-        data: {
-          courseId: params.courseId,
-          userId: user.id,
-        },
-      });
-    }
 
     statusQuery.searchParams.set("payment", "success");
     return NextResponse.redirect(statusQuery);

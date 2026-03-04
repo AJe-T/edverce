@@ -1,19 +1,18 @@
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 
-export default function PolicyPage() {
+export default function RefundPolicyPage() {
   return (
     <div className="min-h-screen bg-[#03060C] font-sans selection:bg-blue-500/30 text-slate-300">
       <MarketingHeader />
 
       {/* Hero Section */}
       <div className="relative pt-20 pb-16 border-b border-white/5 overflow-hidden">
-        {/* Decorative blur elements behind the hero to match the marketing theme */}
         <div className="absolute top-0 left-1/2 w-[800px] h-[300px] bg-blue-600/10 rounded-full transform -translate-x-1/2 -translate-y-1/2 filter blur-[100px] pointer-events-none" />
 
         <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-6 drop-shadow-sm tracking-tight">
-            Advanced Privacy Policy
+            Advanced Refund Policy
           </h1>
           <p className="text-xl text-slate-400 font-medium">
             Edverce Private Limited

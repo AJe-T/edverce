@@ -7,6 +7,7 @@ import { ConfettiProvider } from "@/components/providers/confetti-provider";
 import { RequestLoadingProvider } from "@/components/providers/request-loading-provider";
 import { GlobalLoader } from "@/components/global-loader";
 import { CursorProvider } from "@/components/providers/cursor-provider";
+import { GlobalMarketing } from "@/components/global-marketing";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -42,6 +43,7 @@ export default function RootLayout({
           <ToastProvider />
           <RequestLoadingProvider />
           <GlobalLoader />
+          <GlobalMarketing />
           {children}
         </body>
       </html>

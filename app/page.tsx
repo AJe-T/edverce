@@ -5,6 +5,13 @@ import Image from "next/image";
 
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 import React, { useState, useRef } from "react";
 import {
@@ -14,20 +21,39 @@ import {
   Code,
   Layout,
   Users,
+  Zap,
   CheckCircle,
   ChevronDown,
   MonitorPlay,
   Award,
   ArrowRight,
-  Sparkles,
-  Loader2,
-  BrainCircuit,
-  Database,
-  Cloud,
-  Server,
-  Terminal,
+  Github,
+  Twitter,
+  Linkedin,
+  BookOpen,
+  Map,
+  Lightbulb,
+  Rocket,
+  ShieldCheck,
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
   MessageSquare,
+  CalendarRange,
+  Search,
+  User,
+  Lock,
+  ArrowLeft,
+  Download,
+  Share2,
+  Medal,
+  Terminal,
+  Cloud,
+  Database,
   Heart,
+  Server,
+  Sparkles,
 } from "lucide-react";
 import {
   motion,
@@ -67,6 +93,63 @@ const FadeIn = ({
     </motion.div>
   );
 };
+
+const reviewsRow1 = [
+  {
+    name: "Akhil Sharma",
+    role: "Frontend Engineer",
+    text: "The section-based learning path made it easy to stay consistent. I moved from scattered docs to building real apps in weeks. The mentor feedback is unmatched.",
+    color: "from-blue-500 to-purple-500",
+  },
+  {
+    name: "Sarah Jenkins",
+    role: "Full Stack Developer",
+    text: "This platform gave me the structured learning I desperately needed. The projects are actually relevant to modern industry standards. Highly recommend!",
+    color: "from-emerald-500 to-teal-500",
+  },
+  {
+    name: "Michael Chen",
+    role: "Software Engineer",
+    text: "I was struggling with React for months before joining. The interactive coding environments and clear video explanations made everything click for me.",
+    color: "from-orange-500 to-red-500",
+  },
+  {
+    name: "David Kim",
+    role: "Student",
+    text: "The community features are amazing. Being able to ask questions and get answers from both mentors and peers within minutes is a game-changer.",
+    color: "from-pink-500 to-rose-500",
+  },
+];
+
+const reviewsRow2 = [
+  {
+    name: "Priya Patel",
+    role: "SDE-1 @ Amazon",
+    text: "I was stuck in tutorial hell for a year. This platform gave me the roadmap I needed. I recently cracked my first SDE role and I owe it to the DSA path here.",
+    color: "from-emerald-500 to-teal-500",
+  },
+  {
+    name: "James Wilson",
+    role: "Backend Developer",
+    text: "The deeply technical deep dives into Node.js and systems architecture blew me away. It goes way beyond basic CRUD apps. Incredible value.",
+    color: "from-indigo-500 to-blue-500",
+  },
+  {
+    name: "Elena Rodriguez",
+    role: "UX/UI Designer -> Dev",
+    text: "Transitioning from design to development was intimidating, but the CSS and Tailwind modules here bridge the gap perfectly. I'm building what I design now!",
+    color: "from-fuchsia-500 to-purple-500",
+  },
+  {
+    name: "Rahul Verma",
+    role: "Tech Lead",
+    text: "I recommend this to all the juniors I mentor. It's the only platform out there that truly focuses on writing clean, scalable, and professional code.",
+    color: "from-amber-500 to-orange-500",
+  },
+];
+
+const scrollingRow1 = [...reviewsRow1, ...reviewsRow1, ...reviewsRow1];
+const scrollingRow2 = [...reviewsRow2, ...reviewsRow2, ...reviewsRow2];
 
 export default function App() {
   const { userId } = useAuth();
@@ -187,25 +270,29 @@ export default function App() {
               delay={0.4}
               className="flex flex-col sm:flex-row gap-4 pt-4"
             >
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="group bg-white text-slate-900 px-8 py-4 rounded-full font-bold text-lg flex items-center justify-center gap-2"
-              >
-                Explore Programs
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-              <motion.button
-                whileHover={{
-                  scale: 1.05,
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                }}
-                whileTap={{ scale: 0.95 }}
-                className="group px-8 py-4 rounded-full font-bold text-lg text-white border border-white/10 flex items-center justify-center gap-2 glass-panel"
-              >
-                <Play className="w-5 h-5 text-blue-400" />
-                Watch Demo
-              </motion.button>
+              <Link href="#courses">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="group bg-white text-slate-900 px-8 py-4 rounded-full font-bold text-lg flex items-center justify-center gap-2"
+                >
+                  Explore Programs
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </motion.button>
+              </Link>
+              <Link href="/dashboard">
+                <motion.button
+                  whileHover={{
+                    scale: 1.05,
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  className="group px-8 py-4 rounded-full font-bold text-lg text-white border border-white/10 flex items-center justify-center gap-2 glass-panel"
+                >
+                  <Layout className="w-5 h-5 flex-shrink-0" />
+                  Dashboard
+                </motion.button>
+              </Link>
             </FadeIn>
 
             <FadeIn
@@ -411,9 +498,86 @@ export default function App() {
                   </div>
                 </div>
 
-                <button className="self-start bg-white text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition-colors flex items-center gap-2">
-                  View Curriculum <ArrowRight className="w-4 h-4" />
-                </button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="self-start bg-white text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition-colors flex items-center gap-2">
+                      View Curriculum <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-[#0A0F1C] border border-white/10 text-slate-300 max-w-2xl overflow-hidden">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl font-bold text-white mb-2">
+                        Full Stack Web Development
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+                      <p className="text-slate-400 text-sm">
+                        This track is currently under heavy production. Here is
+                        a sneak peek at the modules you will master soon:
+                      </p>
+                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
+                        <h4 className="font-bold text-blue-400">
+                          Module 1: The Frontend Core
+                        </h4>
+                        <p className="text-sm">
+                          Semantic HTML5, Advanced CSS3 mechanics, CSS
+                          Variables, and Flexbox/Grid mastery.
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
+                        <h4 className="font-bold text-blue-400">
+                          Module 2: JavaScript & DOM Manipulation
+                        </h4>
+                        <p className="text-sm">
+                          ES6+ syntax, asynchronous programming, closures, and
+                          fetching APIs under the hood.
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
+                        <h4 className="font-bold text-blue-400">
+                          Module 3: React & Next.js Ecosystem
+                        </h4>
+                        <p className="text-sm">
+                          Server vs Client components, App Router, Hooks, Redux
+                          Toolkit, and Tailwind CSS.
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
+                        <h4 className="font-bold text-blue-400">
+                          Module 4: Scalable Backend APIs
+                        </h4>
+                        <p className="text-sm">
+                          Node.js, Express, MVC architecture, custom JWT
+                          authentication, and security.
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
+                        <h4 className="font-bold text-blue-400">
+                          Module 5: MongoDB & PostgreSQL
+                        </h4>
+                        <p className="text-sm">
+                          Prisma ORM, Mongoose, NoSQL vs SQL, robust relational
+                          models, and aggregation.
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
+                        <h4 className="font-bold text-blue-400">
+                          Module 6: Final Capstone Ship
+                        </h4>
+                        <p className="text-sm">
+                          Build a fully featured LMS/E-Commerce platform from
+                          scratch and deploy to AWS.
+                        </p>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </FadeIn>
@@ -422,6 +586,13 @@ export default function App() {
           <FadeIn direction="right">
             <div className="group glass-panel rounded-3xl p-2 md:p-8 flex flex-col-reverse md:flex-row items-center gap-8 md:gap-16 border border-white/5 hover:border-indigo-500/30 transition-colors relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-l from-indigo-600/0 via-indigo-600/0 to-indigo-600/0 group-hover:from-indigo-600/5 group-hover:to-transparent transition-all duration-500"></div>
+
+              {/* OVERLAY FOR BLURRING WHOLE CARD */}
+              <div className="absolute inset-0 z-50 backdrop-blur-xl bg-slate-950/70 flex flex-col items-center justify-center pointer-events-none rounded-3xl">
+                <div className="bg-black/90 px-8 py-4 rounded-full border border-indigo-500/50 text-indigo-400 text-xl font-bold tracking-widest flex items-center gap-3 shadow-[0_0_40px_rgba(99,102,241,0.6)] pointer-events-auto">
+                  <Sparkles className="w-5 h-5" /> COMING SOON
+                </div>
+              </div>
 
               <div className="w-full md:w-7/12 flex flex-col justify-center px-4 pb-6 md:p-0 relative z-10">
                 <div className="flex gap-3 mb-4">
@@ -459,9 +630,86 @@ export default function App() {
                   </div>
                 </div>
 
-                <button className="self-start bg-white text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition-colors flex items-center gap-2">
-                  View Curriculum <ArrowRight className="w-4 h-4" />
-                </button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="self-start bg-white text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition-colors flex items-center gap-2">
+                      View Curriculum <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-[#0A0F1C] border border-white/10 text-slate-300 max-w-2xl overflow-hidden">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl font-bold text-white mb-2">
+                        DSA & Interview Prep Path
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+                      <p className="text-slate-400 text-sm">
+                        We are meticulously handcrafting 300+ problems and video
+                        explanations. Content arriving soon:
+                      </p>
+                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
+                        <h4 className="font-bold text-indigo-400">
+                          Phase 1: Time & Space Complexity
+                        </h4>
+                        <p className="text-sm">
+                          Big O notation, asymptotes, and memory models under
+                          the hood.
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
+                        <h4 className="font-bold text-indigo-400">
+                          Phase 2: Fundamental Data Structures
+                        </h4>
+                        <p className="text-sm">
+                          Arrays, Strings, Hashmaps, Linked Lists, Stacks, and
+                          Queues.
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
+                        <h4 className="font-bold text-indigo-400">
+                          Phase 3: Advanced Architectures
+                        </h4>
+                        <p className="text-sm">
+                          Trees, Graphs, Tries, Disjoint Sets (Union Find), and
+                          Segment Trees.
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
+                        <h4 className="font-bold text-indigo-400">
+                          Phase 4: The Algorithm Playbook
+                        </h4>
+                        <p className="text-sm">
+                          Two Pointers, Sliding Window, Deep/Breadth First
+                          Search, Dynamic Programming.
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
+                        <h4 className="font-bold text-indigo-400">
+                          Phase 5: Machine Coding Rounds
+                        </h4>
+                        <p className="text-sm">
+                          Build Twitter feed, LRU Cache, and DOM Tree
+                          transversal algorithms step by step.
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
+                        <h4 className="font-bold text-indigo-400">
+                          Phase 6: Mock Interviews
+                        </h4>
+                        <p className="text-sm">
+                          Behavioral rounds, resume optimization, and intense
+                          1-on-1 mock sessions.
+                        </p>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
 
               <div className="w-full md:w-5/12 aspect-video md:aspect-square bg-slate-900 rounded-2xl overflow-hidden relative border border-white/10">
@@ -672,6 +920,121 @@ export default function App() {
         </div>
       </section>
 
+      {/* --- NEW SECTION: Integrated Code Playground Showcase --- */}
+      <section className="py-24 px-6 max-w-7xl mx-auto relative overflow-hidden">
+        {/* Glows */}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none" />
+
+        <div className="grid lg:grid-cols-2 gap-12 items-center reveal-on-scroll opacity-100 translate-y-0">
+          {/* Left: Text */}
+          <div className="space-y-6 order-2 lg:order-1">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-semibold tracking-wide uppercase">
+              <Terminal className="w-4 h-4" /> Built-in IDE
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+              Code, test, and ship <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+                without leaving the browser.
+              </span>
+            </h2>
+            <p className="text-lg text-slate-400 leading-relaxed">
+              Forget about frustrating local environment setups. Our integrated
+              code playground gives you an instant, cloud-based IDE to practice
+              React, Node.js, Python, and more right inside your lessons.
+            </p>
+            <ul className="space-y-3 pt-2 pb-4">
+              <li className="flex items-center gap-3 text-slate-300">
+                <CheckCircle className="w-5 h-5 text-blue-500" /> Real-time
+                preview and console logs
+              </li>
+              <li className="flex items-center gap-3 text-slate-300">
+                <CheckCircle className="w-5 h-5 text-blue-500" /> Support for
+                15+ languages & frameworks
+              </li>
+              <li className="flex items-center gap-3 text-slate-300">
+                <CheckCircle className="w-5 h-5 text-blue-500" /> AI-assisted
+                code suggestions
+              </li>
+            </ul>
+            <Link href="/playground">
+              <button className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] flex items-center gap-2">
+                Open Playground <ArrowRight className="w-4 h-4" />
+              </button>
+            </Link>
+          </div>
+
+          {/* Right: Editor Mockup */}
+          <div className="relative rounded-2xl glass-panel border border-white/10 p-2 shadow-2xl order-1 lg:order-2">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#0A0F1C] rounded-t-xl">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+              </div>
+              <div className="text-xs text-slate-500 font-mono bg-white/5 px-3 py-1 rounded-md">
+                main.jsx
+              </div>
+              <div className="flex gap-2">
+                <Play className="w-4 h-4 text-green-400" />
+              </div>
+            </div>
+            <div className="bg-[#0A0F1C] p-6 rounded-b-xl font-mono text-sm sm:text-base text-slate-300 overflow-hidden relative min-h-[300px] flex flex-col">
+              <pre className="text-left overflow-x-auto">
+                <span className="text-pink-400">import</span> React{" "}
+                <span className="text-pink-400">from</span>{" "}
+                <span className="text-green-400">&apos;react&apos;</span>;<br />
+                <br />
+                <span className="text-blue-400">
+                  export default function
+                </span>{" "}
+                <span className="text-yellow-300">App</span>() {"{"}
+                <br />
+                &nbsp;&nbsp;<span className="text-pink-400">return</span> (
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;
+                <span className="text-blue-300">div</span>{" "}
+                <span className="text-purple-300">className</span>=
+                <span className="text-green-400">
+                  &quot;grid place-items-center&quot;
+                </span>
+                &gt;
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;
+                <span className="text-blue-300">h1</span>{" "}
+                <span className="text-purple-300">className</span>=
+                <span className="text-green-400">&quot;text-white&quot;</span>
+                &gt;
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hello, Edverce
+                Developer!
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/
+                <span className="text-blue-300">h1</span>&gt;
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/
+                <span className="text-blue-300">div</span>&gt;
+                <br />
+                &nbsp;&nbsp;);
+                <br />
+                {"}"}
+              </pre>
+
+              {/* Floating Browser Preview inside IDE Mockup */}
+              <div className="absolute bottom-4 right-4 left-12 bg-[#060B14] border border-white/10 rounded-lg p-4 shadow-xl transform translate-y-2 hover:translate-y-0 transition-transform">
+                <div className="text-xs text-slate-500 mb-2 font-sans border-b border-white/5 pb-2">
+                  Preview Output
+                </div>
+                <div className="grid place-items-center h-16">
+                  <h1 className="text-white font-bold text-lg">
+                    Hello, Edverce Developer! 👋
+                  </h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* --- NEW SECTION: Community & Impact --- */}
       <section id="community" className="py-24 px-6 relative overflow-hidden">
         {/* Floating animated background elements */}
@@ -798,12 +1161,12 @@ export default function App() {
         id="testimonials"
         className="py-24 overflow-hidden bg-slate-900/20 border-y border-white/5 flex flex-col items-center"
       >
-        <div className="text-center mb-16 px-6 reveal-on-scroll opacity-0 translate-y-10">
+        <div className="text-center mb-20 px-6 reveal-on-scroll opacity-100 translate-y-10">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
             Learner Stories
           </h2>
           <p className="text-slate-400 text-lg">
-            Don&apos;t just take our word for it.
+            {"Don't just take our word for it."}
           </p>
         </div>
 
@@ -814,7 +1177,7 @@ export default function App() {
 
           {/* Row 1 (Scrolls Left) */}
           <div className="flex animate-scroll gap-6 px-4">
-            {[1, 2, 3, 4, 5, 1, 2, 3].map((item, i) => (
+            {scrollingRow1.map((item, i) => (
               <div
                 key={i}
                 className="w-[350px] shrink-0 glass-panel p-6 rounded-2xl border border-white/5 hover:border-white/20 transition-colors"
@@ -827,19 +1190,17 @@ export default function App() {
                   <Star className="w-4 h-4 fill-current" />
                 </div>
                 <p className="text-slate-300 text-sm mb-6 leading-relaxed">
-                  &quot;The section-based learning path made it easy to stay
-                  consistent. I moved from scattered docs to building real apps
-                  in weeks. The mentor feedback is unmatched.&quot;
+                  &quot;{item.text}&quot;
                 </p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500"></div>
+                  <div
+                    className={`w-10 h-10 rounded-full bg-gradient-to-tr ${item.color}`}
+                  ></div>
                   <div>
                     <div className="text-white font-bold text-sm">
-                      Akhil Sharma
+                      {item.name}
                     </div>
-                    <div className="text-slate-500 text-xs">
-                      Frontend Engineer
-                    </div>
+                    <div className="text-slate-500 text-xs">{item.role}</div>
                   </div>
                 </div>
               </div>
@@ -848,7 +1209,7 @@ export default function App() {
 
           {/* Row 2 (Scrolls Right) */}
           <div className="flex animate-scroll-reverse gap-6 px-4">
-            {[1, 2, 3, 4, 5, 1, 2, 3].map((item, i) => (
+            {scrollingRow2.map((item, i) => (
               <div
                 key={i}
                 className="w-[350px] shrink-0 glass-panel p-6 rounded-2xl border border-white/5 hover:border-white/20 transition-colors"
@@ -861,17 +1222,17 @@ export default function App() {
                   <Star className="w-4 h-4 fill-current" />
                 </div>
                 <p className="text-slate-300 text-sm mb-6 leading-relaxed">
-                  &quot;I was stuck in tutorial hell for a year. This platform
-                  gave me the roadmap I needed. I recently cracked my first SDE
-                  role and I owe it to the DSA path here.&quot;
+                  &quot;{item.text}&quot;
                 </p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500"></div>
+                  <div
+                    className={`w-10 h-10 rounded-full bg-gradient-to-tr ${item.color}`}
+                  ></div>
                   <div>
                     <div className="text-white font-bold text-sm">
-                      Priya Patel
+                      {item.name}
                     </div>
-                    <div className="text-slate-500 text-xs">SDE-1 @ Amazon</div>
+                    <div className="text-slate-500 text-xs">{item.role}</div>
                   </div>
                 </div>
               </div>
@@ -953,16 +1314,17 @@ export default function App() {
       </section>
 
       {/* --- CTA Section --- */}
-      <section className="py-24 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-[800px] h-[400px] bg-blue-600/20 blur-[120px] rounded-full"></div>
+      <section className="py-24 px-6 border-t border-white/5 relative overflow-hidden bg-gradient-to-b from-transparent to-blue-950/20">
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+          <div className="w-[1000px] h-[300px] bg-blue-600/10 blur-[150px] rounded-full"></div>
         </div>
 
-        <FadeIn className="max-w-4xl mx-auto glass-panel border border-blue-500/20 rounded-[3rem] p-12 md:p-20 text-center relative z-10 shadow-[0_0_50px_rgba(37,99,235,0.1)]">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6">
+        <FadeIn className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">
             Ready to launch your learning roadmap?
           </h2>
-          <p className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
             Join thousands of developers who are advancing their careers through
             structured, project-based learning.
           </p>
@@ -971,21 +1333,23 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-full font-bold text-lg shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2"
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2 transition-all"
               >
                 Start Learning Now <ArrowRight className="w-5 h-5" />
               </motion.button>
             </Link>
-            <motion.button
-              whileHover={{
-                scale: 1.05,
-                backgroundColor: "rgba(255,255,255,0.05)",
-              }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto px-8 py-4 rounded-full font-bold text-lg text-slate-300 border border-transparent hover:border-white/10 transition-colors"
-            >
-              See full syllabus
-            </motion.button>
+            <Link href="#courses" className="w-full sm:w-auto">
+              <motion.button
+                whileHover={{
+                  scale: 1.05,
+                  backgroundColor: "rgba(255,255,255,0.05)",
+                }}
+                whileTap={{ scale: 0.95 }}
+                className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg text-slate-300 border border-slate-700 hover:border-slate-500 transition-colors"
+              >
+                See full syllabus
+              </motion.button>
+            </Link>
           </div>
         </FadeIn>
       </section>

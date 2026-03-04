@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { SignOutButton, useAuth } from "@clerk/nextjs";
 
@@ -8,18 +9,20 @@ export const MarketingHeader = () => {
   const { userId } = useAuth();
 
   return (
-    <nav className="sticky top-0 w-full z-50 bg-[#0f172a99] backdrop-blur-md border-b-0 border-white/5 transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 group cursor-pointer">
-          <motion.div
-            whileHover={{ rotate: 90 }}
-            className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold group-hover:shadow-[0_0_15px_rgba(37,99,235,0.6)] transition-all"
-          >
-            L
-          </motion.div>
-          <span className="text-xl font-bold text-white tracking-tight">
-            LMS<span className="text-blue-500">Platform</span>
-          </span>
+    <nav className="marketing-header fixed top-0 [.has-topbar_&]:top-10 w-full z-50 bg-[#0f172a99] backdrop-blur-md border-b-0 border-white/5 transition-all duration-300">
+      <div className="max-w-7xl mx-auto h-20 flex items-center justify-between px-4">
+        <Link
+          href="/"
+          className="flex items-center gap-2 group cursor-pointer hover:opacity-90 transition-opacity"
+        >
+          <Image
+            src="/Logo.png"
+            alt="EdVerce Logo"
+            width={140}
+            height={45}
+            className="object-contain"
+            priority
+          />
         </Link>
 
         <div className="flex items-center gap-4">

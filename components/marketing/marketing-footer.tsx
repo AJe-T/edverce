@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Twitter, Linkedin, Github } from "lucide-react";
 
 export const MarketingFooter = () => {
@@ -6,13 +7,16 @@ export const MarketingFooter = () => {
     <footer className="border-t border-white/5 bg-[#03060C] text-slate-300 pt-16 pb-8 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
         <div className="col-span-1 md:col-span-2">
-          <div className="flex items-center gap-2 mb-6">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold">
-              L
-            </div>
-            <span className="text-xl font-bold text-white tracking-tight">
-              LMS<span className="text-blue-500">Platform</span>
-            </span>
+          <div className="flex items-center gap-2 mb-6 cursor-pointer">
+            <Link href="/">
+              <Image
+                src="/Logo.png"
+                alt="EdVerce Logo"
+                width={140}
+                height={45}
+                className="object-contain"
+              />
+            </Link>
           </div>
           <p className="text-slate-400 max-w-sm mb-6">
             A modern learning management system for creators, schools, and
@@ -20,19 +24,25 @@ export const MarketingFooter = () => {
           </p>
           <div className="flex gap-4">
             <a
-              href="#"
+              href="https://twitter.com"
+              target="_blank"
+              rel="noreferrer"
               className="text-slate-500 hover:text-white transition-colors"
             >
               <Twitter className="w-5 h-5" />
             </a>
             <a
-              href="#"
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noreferrer"
               className="text-slate-500 hover:text-white transition-colors"
             >
               <Linkedin className="w-5 h-5" />
             </a>
             <a
-              href="#"
+              href="https://github.com/teja-n"
+              target="_blank"
+              rel="noreferrer"
               className="text-slate-500 hover:text-white transition-colors"
             >
               <Github className="w-5 h-5" />
@@ -53,14 +63,14 @@ export const MarketingFooter = () => {
                 About
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link
                 href="/features"
                 className="hover:text-blue-400 transition-colors"
               >
                 Features
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link
                 href="/contact"
@@ -103,7 +113,7 @@ export const MarketingFooter = () => {
             </li>
             <li>
               <Link
-                href="/policy"
+                href="/refund"
                 className="hover:text-blue-400 transition-colors"
               >
                 Refund Policy
@@ -114,7 +124,7 @@ export const MarketingFooter = () => {
       </div>
 
       <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 text-center text-slate-500 text-sm">
-        &copy; {new Date().getFullYear()} LMS Platform. All rights reserved.
+        &copy; {new Date().getFullYear()} EdVerce. All rights reserved.
       </div>
     </footer>
   );

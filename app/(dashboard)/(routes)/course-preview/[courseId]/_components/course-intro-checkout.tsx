@@ -68,60 +68,77 @@ export const CourseIntroCheckout = ({
   };
 
   return (
-    <div className="rounded-xl border bg-card p-5 space-y-5 sticky top-24">
+    <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 space-y-6 sticky top-24 shadow-xl">
       <div>
-        <h3 className="text-lg font-semibold">Pricing</h3>
-        <p className="text-xs text-muted-foreground mt-1">
-          Transparent pricing with instant course access.
+        <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
+          Unlock Course
+        </h3>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">
+          Transparent pricing with instant lifetime access.
         </p>
       </div>
 
-      <div className="space-y-2 text-sm">
-        <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">Course Charges</span>
-          <span>{formatPrice(baseAmountInPaise / 100)}</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">Discount</span>
-          <span
-            className={
-              discountInPaise > 0 ? "text-emerald-700 font-medium" : ""
-            }
-          >
-            - {formatPrice(discountInPaise / 100)}
+      <div className="space-y-3 text-sm bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between font-medium">
+          <span className="text-slate-500 dark:text-slate-400">
+            Course Charges
+          </span>
+          <span className="text-slate-900 dark:text-white">
+            {formatPrice(baseAmountInPaise / 100)}
           </span>
         </div>
-        <div className="flex items-center justify-between border-t border-dashed pt-2">
-          <span className="text-muted-foreground">Subtotal</span>
-          <span>{formatPrice(subtotalInPaise / 100)}</span>
+        {(discountInPaise > 0 || appliedCoupon) && (
+          <div className="flex items-center justify-between font-medium">
+            <span className="text-slate-500 dark:text-slate-400">Discount</span>
+            <span className="text-emerald-500 font-bold">
+              - {formatPrice(discountInPaise / 100)}
+            </span>
+          </div>
+        )}
+        <div className="flex items-center justify-between border-t border-slate-200 dark:border-slate-700/50 pt-3 font-medium">
+          <span className="text-slate-500 dark:text-slate-400">Subtotal</span>
+          <span className="text-slate-900 dark:text-white">
+            {formatPrice(subtotalInPaise / 100)}
+          </span>
         </div>
-        <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">GST (18%)</span>
-          <span>{formatPrice(gstInPaise / 100)}</span>
+        <div className="flex items-center justify-between font-medium">
+          <span className="text-slate-500 dark:text-slate-400">GST (18%)</span>
+          <span className="text-slate-900 dark:text-white">
+            {formatPrice(gstInPaise / 100)}
+          </span>
         </div>
-        <div className="border-t pt-2 flex items-center justify-between font-semibold">
-          <span>Total payable</span>
-          <span>{formatPrice(totalAmountInPaise / 100)}</span>
+        <div className="border-t border-slate-200 dark:border-slate-700/50 pt-3 mt-1 flex items-center justify-between">
+          <span className="font-semibold text-slate-700 dark:text-slate-300">
+            Total payable
+          </span>
+          <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
+            {formatPrice(totalAmountInPaise / 100)}
+          </span>
         </div>
       </div>
 
-      {alreadyPurchased ? (
-        <Button asChild className="w-full">
-          <a href={`/courses/${courseId}`}>{ctaLabel}</a>
-        </Button>
-      ) : (
-        <CourseEnrollButton
-          courseId={courseId}
-          price={totalAmountInPaise / 100}
-          couponCode={appliedCoupon || undefined}
-          ctaLabel={ctaLabel}
-        />
-      )}
+      <div className="pt-2">
+        {alreadyPurchased ? (
+          <Button
+            asChild
+            className="w-full h-14 text-lg font-bold rounded-xl shadow-lg hover:shadow-xl transition-all"
+          >
+            <a href={`/courses/${courseId}`}>{ctaLabel}</a>
+          </Button>
+        ) : (
+          <CourseEnrollButton
+            courseId={courseId}
+            price={totalAmountInPaise / 100}
+            couponCode={appliedCoupon || undefined}
+            ctaLabel={ctaLabel}
+          />
+        )}
+      </div>
 
-      <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 space-y-2">
-        <div className="flex items-center gap-2 text-sm font-medium">
+      <div className="rounded-xl border border-blue-500/20 bg-blue-50 dark:bg-blue-500/5 p-4 space-y-3">
+        <div className="flex items-center gap-2 text-sm font-semibold text-blue-700 dark:text-blue-400">
           <Tag className="h-4 w-4" />
-          Apply coupon
+          Have a promotional code?
         </div>
         <div className="flex items-center gap-2">
           <Input
@@ -131,17 +148,18 @@ export const CourseIntroCheckout = ({
             }
             placeholder="e.g. WELCOME10"
             disabled={isApplyingCoupon}
+            className="bg-white dark:bg-slate-900 shadow-sm border-slate-200 dark:border-slate-800"
           />
           <Button
             type="button"
-            variant="secondary"
+            variant="default"
             onClick={onApplyCoupon}
             disabled={isApplyingCoupon}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
           >
             {isApplyingCoupon ? (
               <span className="flex items-center gap-1">
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                Applying
               </span>
             ) : (
               "Apply"
@@ -149,26 +167,34 @@ export const CourseIntroCheckout = ({
           </Button>
         </div>
         {appliedCoupon && (
-          <p className="text-xs text-emerald-700">
+          <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
             {appliedCoupon} applied successfully.
           </p>
         )}
       </div>
 
-      <div className="space-y-2 rounded-lg border p-3">
-        <p className="text-sm font-medium">What is included</p>
-        <div className="space-y-1.5 text-xs text-muted-foreground">
-          <p className="flex items-center gap-2">
-            <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
-            Full course access
+      <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/80 p-5">
+        <p className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+          What&apos;s included
+        </p>
+        <div className="space-y-3 text-sm text-slate-600 dark:text-slate-300 font-medium">
+          <p className="flex items-center gap-3">
+            <div className="p-1 rounded-full bg-emerald-100 dark:bg-emerald-500/20">
+              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            Full lifetime access
           </p>
-          <p className="flex items-center gap-2">
-            <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
+          <p className="flex items-center gap-3">
+            <div className="p-1 rounded-full bg-emerald-100 dark:bg-emerald-500/20">
+              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            </div>
             Chapter resources and attachments
           </p>
-          <p className="flex items-center gap-2">
-            <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
-            Progress tracking dashboard
+          <p className="flex items-center gap-3">
+            <div className="p-1 rounded-full bg-emerald-100 dark:bg-emerald-500/20">
+              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            Certificate of completion
           </p>
         </div>
       </div>

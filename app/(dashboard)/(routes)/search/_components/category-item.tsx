@@ -2,11 +2,7 @@
 
 import qs from "query-string";
 import { IconType } from "react-icons";
-import { 
-  usePathname, 
-  useRouter, 
-  useSearchParams
-} from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
@@ -14,7 +10,7 @@ interface CategoryItemProps {
   label: string;
   value?: string;
   icon?: IconType;
-};
+}
 
 export const CategoryItem = ({
   label,
@@ -31,13 +27,16 @@ export const CategoryItem = ({
   const isSelected = currentCategoryId === value;
 
   const onClick = () => {
-    const url = qs.stringifyUrl({
-      url: pathname,
-      query: {
-        title: currentTitle,
-        categoryId: isSelected ? null : value,
-      }
-    }, { skipNull: true, skipEmptyString: true });
+    const url = qs.stringifyUrl(
+      {
+        url: pathname,
+        query: {
+          title: currentTitle,
+          categoryId: isSelected ? null : value,
+        },
+      },
+      { skipNull: true, skipEmptyString: true },
+    );
 
     router.push(url);
   };
@@ -46,15 +45,15 @@ export const CategoryItem = ({
     <button
       onClick={onClick}
       className={cn(
-        "py-2 px-3 text-sm border border-border rounded-full flex items-center gap-x-1 hover:border-primary transition",
-        isSelected && "border-primary bg-primary/10 text-primary"
+        "py-2 px-4 text-sm font-medium border rounded-full flex items-center gap-x-2 transition-all duration-200",
+        isSelected
+          ? "border-blue-500 bg-blue-500/10 text-blue-700 dark:text-blue-400 shadow-sm"
+          : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:border-blue-500/50 hover:bg-slate-50 dark:hover:bg-slate-800 hover:shadow-sm",
       )}
       type="button"
     >
       {Icon && <Icon size={20} />}
-      <div className="truncate">
-        {label}
-      </div>
+      <div className="truncate">{label}</div>
     </button>
-  )
-}
+  );
+};

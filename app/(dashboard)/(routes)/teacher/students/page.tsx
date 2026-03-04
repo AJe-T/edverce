@@ -1,9 +1,10 @@
 import { auth, clerkClient } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { Users, BookOpen, Percent } from "lucide-react";
+import { Users } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { getProgress } from "@/actions/get-progress";
+import { StudentsTable } from "./_components/students-table";
 
 export default async function StudentsPage() {
   const { userId } = auth();
@@ -69,10 +70,26 @@ export default async function StudentsPage() {
       const enrolledCoursesWithProgress = await Promise.all(
         enrolledCourses.map(async (course) => {
           const progress = await getProgress(studentId, course.id);
+          const purchaseRecord = course.purchases.find(
+            (p) => p.userId === studentId,
+          );
+
+          let purchasedAt = null;
+          let expiresAt = null;
+
+          if (purchaseRecord) {
+            purchasedAt = purchaseRecord.createdAt;
+            const expiration = new Date(purchaseRecord.createdAt);
+            expiration.setMonth(expiration.getMonth() + 3);
+            expiresAt = expiration;
+          }
+
           return {
             id: course.id,
             title: course.title,
             progress: progress || 0,
+            purchasedAt,
+            expiresAt,
           };
         }),
       );
@@ -96,104 +113,7 @@ export default async function StudentsPage() {
         <h1 className="text-2xl font-bold">Your Students</h1>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 border rounded-xl overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="text-xs text-muted-foreground uppercase bg-slate-50 dark:bg-slate-800 border-b">
-              <tr>
-                <th scope="col" className="px-6 py-4 font-medium">
-                  Student Name
-                </th>
-                <th scope="col" className="px-6 py-4 font-medium">
-                  Email
-                </th>
-                <th scope="col" className="px-6 py-4 font-medium">
-                  Enrolled Courses
-                </th>
-                <th scope="col" className="px-6 py-4 font-medium text-right">
-                  Progress
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              {students.length === 0 && (
-                <tr>
-                  <td
-                    colSpan={4}
-                    className="px-6 py-8 text-center text-muted-foreground"
-                  >
-                    No students have enrolled in your courses yet.
-                  </td>
-                </tr>
-              )}
-              {students.map((student) => (
-                <tr
-                  key={student.id}
-                  className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-3">
-                      {student.imageUrl ? (
-                        <img
-                          src={student.imageUrl}
-                          alt={student.name}
-                          className="w-8 h-8 rounded-full border border-white/10"
-                        />
-                      ) : (
-                        <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-medium">
-                          {student.name.charAt(0)}
-                        </div>
-                      )}
-                      <span className="font-semibold">{student.name}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-muted-foreground">
-                    {student.email}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="space-y-3">
-                      {student.courses.map((course) => (
-                        <div key={course.id} className="flex flex-col gap-1">
-                          <div className="flex items-center gap-2 font-medium line-clamp-1">
-                            <BookOpen className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                            {course.title}
-                          </div>
-
-                          {/* Progress Bar inside cell */}
-                          <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mt-1 relative overflow-hidden">
-                            <div
-                              className={`h-1.5 rounded-full ${course.progress === 100 ? "bg-emerald-500" : "bg-blue-500"}`}
-                              style={{ width: `${course.progress}%` }}
-                            ></div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="space-y-4">
-                      {student.courses.map((course) => (
-                        <div
-                          key={course.id}
-                          className="text-xs font-semibold tabular-nums"
-                        >
-                          {course.progress === 100 ? (
-                            <span className="text-emerald-500">Completed</span>
-                          ) : (
-                            <span className="text-slate-500">
-                              {Math.round(course.progress)}%
-                            </span>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <StudentsTable students={students} />
     </div>
   );
 }

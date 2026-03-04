@@ -137,3 +137,14 @@ model Coupon {
 
   @@index([categoryId])
 }
+
+model MarketingSetting {
+  id String @id @default("default")
+  
+  popupTitle String?
+  popupImageUrl String? @db.Text
+  popupIsActive Boolean @default(false)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

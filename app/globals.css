@@ -10,33 +10,34 @@ body,
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 215 28% 17%;
+    /* Edverce Custom Light Theme provided by user */
+    --background: 0 11% 97%; /* #F9F7F7 */
+    --foreground: 212 64% 19%; /* #112D4E */
 
-    --card: 0 0% 100%;
-    --card-foreground: 215 28% 17%;
+    --card: 0 11% 97%; /* #F9F7F7 */
+    --card-foreground: 212 64% 19%; /* #112D4E */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 28% 17%;
+    --popover: 0 11% 97%; /* #F9F7F7 */
+    --popover-foreground: 212 64% 19%; /* #112D4E */
 
-    --primary: 224 64% 33%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 213 47% 47%; /* #3F72AF */
+    --primary-foreground: 0 11% 97%; /* #F9F7F7 */
 
-    --secondary: 217 91% 60%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 219 42% 90%; /* #DBE2EF */
+    --secondary-foreground: 212 64% 19%; /* #112D4E */
 
-    --muted: 210 32% 94%;
-    --muted-foreground: 215 16% 42%;
+    --muted: 219 42% 90%; /* #DBE2EF */
+    --muted-foreground: 212 28% 40%; /* slightly lighter text */
 
-    --accent: 210 32% 94%;
-    --accent-foreground: 215 28% 17%;
+    --accent: 219 42% 90%; /* #DBE2EF */
+    --accent-foreground: 212 64% 19%; /* #112D4E */
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 11% 97%; /* #F9F7F7 */
 
-    --border: 214 30% 88%;
-    --input: 214 30% 88%;
-    --ring: 217 91% 60%;
+    --border: 219 42% 85%; /* Lighter #DBE2EF for borders */
+    --input: 219 42% 90%; /* #DBE2EF */
+    --ring: 213 47% 47%; /* #3F72AF */
 
     --radius: 0.5rem;
   }
@@ -77,7 +78,7 @@ body,
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
     font-family: var(--font-outfit), sans-serif;
   }
 
@@ -216,7 +217,7 @@ body,
     margin-left: -3.5px;
     margin-top: -3.5px;
     border-radius: 9999px;
-    background: hsl(var(--secondary));
+    background: hsl(var(--foreground));
     box-shadow: 0 0 0 1px hsl(var(--background));
   }
 
@@ -242,8 +243,8 @@ body,
     height: 32px;
     margin-left: -16px;
     margin-top: -16px;
-    border-color: hsl(var(--secondary) / 0.55);
-    background: hsl(var(--secondary) / 0.12);
+    border-color: hsl(var(--foreground) / 0.35);
+    background: hsl(var(--foreground) / 0.08);
   }
 
   .custom-cursor-active .custom-cursor {

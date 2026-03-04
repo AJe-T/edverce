@@ -27,12 +27,6 @@ export const NavbarRoutes = () => {
         </div>
       )}
       <div className="flex gap-x-2 ml-auto items-center">
-        <Link href="/">
-          <Button size="sm" variant="ghost">
-            <Home className="h-4 w-4 md:mr-2" />
-            <span className="hidden md:inline">Home</span>
-          </Button>
-        </Link>
         <ModeToggle />
         {isTeacherPage || isCoursePage ? (
           <Link href="/dashboard">

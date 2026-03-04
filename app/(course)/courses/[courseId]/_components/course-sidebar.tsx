@@ -27,7 +27,7 @@ export const CourseSidebar = async ({
     return redirect("/");
   }
 
-  const purchase = await db.purchase.findUnique({
+  let purchase = await db.purchase.findUnique({
     where: {
       userId_courseId: {
         userId,
@@ -35,6 +35,14 @@ export const CourseSidebar = async ({
       },
     },
   });
+
+  if (purchase) {
+    const threeMonthsAgo = new Date();
+    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+    if (purchase.createdAt < threeMonthsAgo) {
+      purchase = null;
+    }
+  }
 
   const sectionMap = new Map<
     string,

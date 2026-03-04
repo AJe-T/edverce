@@ -8,6 +8,8 @@ import {
   List,
   Ticket,
   Users,
+  Megaphone,
+  Terminal,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -23,6 +25,11 @@ const guestRoutes = [
     icon: Compass,
     label: "Browse",
     href: "/search",
+  },
+  {
+    icon: Terminal,
+    label: "Playground",
+    href: "/playground",
   },
   {
     icon: Award,
@@ -46,6 +53,11 @@ const teacherRoutes = [
     icon: Ticket,
     label: "Coupons",
     href: "/teacher/coupons",
+  },
+  {
+    icon: Megaphone,
+    label: "Marketing",
+    href: "/teacher/marketing",
   },
   {
     icon: Users,

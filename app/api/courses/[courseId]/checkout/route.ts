@@ -8,11 +8,13 @@ import { quoteCoupon } from "@/lib/coupons";
 
 export async function POST(
   req: Request,
-  { params }: { params: { courseId: string } }
+  { params }: { params: { courseId: string } },
 ) {
   try {
     const user = await currentUser();
-    const body = (await req.json().catch(() => ({}))) as { couponCode?: string };
+    const body = (await req.json().catch(() => ({}))) as {
+      couponCode?: string;
+    };
 
     if (!user || !user.id) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -29,7 +31,7 @@ export async function POST(
       return new NextResponse("Not found", { status: 404 });
     }
 
-    const purchase = await db.purchase.findUnique({
+    let purchase = await db.purchase.findUnique({
       where: {
         userId_courseId: {
           userId: user.id,
@@ -37,6 +39,14 @@ export async function POST(
         },
       },
     });
+
+    if (purchase) {
+      const threeMonthsAgo = new Date();
+      threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+      if (purchase.createdAt < threeMonthsAgo) {
+        purchase = null;
+      }
+    }
 
     if (purchase) {
       return new NextResponse("Already purchased", { status: 400 });
@@ -53,10 +63,19 @@ export async function POST(
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(req.url).origin;
 
     if (!hasPhonePeCreds) {
-      await db.purchase.create({
-        data: {
+      await db.purchase.upsert({
+        where: {
+          userId_courseId: {
+            userId: user.id,
+            courseId: params.courseId,
+          },
+        },
+        create: {
           userId: user.id,
           courseId: params.courseId,
+        },
+        update: {
+          createdAt: new Date(),
         },
       });
 
@@ -80,7 +99,7 @@ export async function POST(
       .replace(/-/g, "")
       .slice(0, 8)}`;
     const callbackUrl = `${appUrl}/api/courses/${course.id}/purchase?merchantOrderId=${encodeURIComponent(
-      merchantOrderId
+      merchantOrderId,
     )}`;
 
     const phonePeOrder = await createPhonePePayment({

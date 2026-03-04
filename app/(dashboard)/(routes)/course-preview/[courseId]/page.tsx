@@ -41,7 +41,7 @@ const CoursePreviewPage = async ({
     return redirect("/search");
   }
 
-  const purchase = await db.purchase.findUnique({
+  let purchase = await db.purchase.findUnique({
     where: {
       userId_courseId: {
         userId,
@@ -49,6 +49,14 @@ const CoursePreviewPage = async ({
       },
     },
   });
+
+  if (purchase) {
+    const threeMonthsAgo = new Date();
+    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+    if (purchase.createdAt < threeMonthsAgo) {
+      purchase = null;
+    }
+  }
 
   if (purchase) {
     return redirect(`/courses/${course.id}`);
@@ -69,45 +77,50 @@ const CoursePreviewPage = async ({
 
   return (
     <div className="p-6 space-y-6">
-      <div className="rounded-2xl border bg-gradient-to-r from-secondary/10 via-card to-primary/10 p-6 overflow-hidden marketing-grid-bg">
+      <div className="rounded-2xl border bg-white dark:bg-slate-900 p-6 overflow-hidden">
         <div className="flex flex-wrap items-center gap-2 text-xs mb-3">
           {course.category?.name && (
-            <span className="px-2 py-1 rounded-full border bg-background/70">{course.category.name}</span>
+            <span className="px-2 py-1 rounded-full border bg-slate-50 dark:bg-slate-800">
+              {course.category.name}
+            </span>
           )}
-          <span className="px-2 py-1 rounded-full border bg-background/70">
+          <span className="px-2 py-1 rounded-full border bg-slate-50 dark:bg-slate-800">
             {chapterCount} {chapterCount === 1 ? "lesson" : "lessons"}
           </span>
         </div>
         <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr] lg:items-center">
           <div>
-            <h1 className="text-3xl font-semibold tracking-tight lg:text-4xl">{course.title}</h1>
+            <h1 className="text-3xl font-semibold tracking-tight lg:text-4xl">
+              {course.title}
+            </h1>
             <p className="text-sm text-muted-foreground mt-3 max-w-3xl">
-              {course.description || "Master this course with structured lessons, practical flow, and guided progression."}
+              {course.description ||
+                "Master this course with structured lessons, practical flow, and guided progression."}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5">
-              <div className="rounded-lg border bg-background/80 p-3 text-sm tilt-3d">
+              <div className="rounded-lg border bg-slate-50 dark:bg-slate-800 p-3 text-sm hover:-translate-y-1 hover:shadow-md transition-all">
                 <p className="flex items-center gap-2 font-medium">
-                  <BookOpen className="h-4 w-4" />
+                  <BookOpen className="h-4 w-4 text-blue-500" />
                   Structured modules
                 </p>
               </div>
-              <div className="rounded-lg border bg-background/80 p-3 text-sm tilt-3d">
+              <div className="rounded-lg border bg-slate-50 dark:bg-slate-800 p-3 text-sm hover:-translate-y-1 hover:shadow-md transition-all">
                 <p className="flex items-center gap-2 font-medium">
-                  <Layers className="h-4 w-4" />
+                  <Layers className="h-4 w-4 text-indigo-500" />
                   Section-wise learning
                 </p>
               </div>
-              <div className="rounded-lg border bg-background/80 p-3 text-sm tilt-3d">
+              <div className="rounded-lg border bg-slate-50 dark:bg-slate-800 p-3 text-sm hover:-translate-y-1 hover:shadow-md transition-all">
                 <p className="flex items-center gap-2 font-medium">
-                  <Clock3 className="h-4 w-4" />
+                  <Clock3 className="h-4 w-4 text-emerald-500" />
                   Learn at your own pace
                 </p>
               </div>
             </div>
           </div>
           <div className="relative">
-            <div className="absolute -right-8 -top-8 h-36 w-36 rounded-full bg-primary/20 blur-2xl" />
-            <div className="relative overflow-hidden rounded-xl border bg-background shadow-sm float-soft">
+            <div className="absolute -right-8 -top-8 h-36 w-36 rounded-full bg-blue-500/10 blur-2xl pointer-events-none" />
+            <div className="relative overflow-hidden rounded-xl border bg-white dark:bg-slate-900 shadow-lg">
               <Image
                 src={course.imageUrl || "/marketing-hero.svg"}
                 alt={course.title}
@@ -126,15 +139,20 @@ const CoursePreviewPage = async ({
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
-          <div className="rounded-xl border bg-card p-5">
-            <h2 className="text-lg font-semibold flex items-center gap-2">
+          <div className="rounded-xl border bg-white dark:bg-slate-900 p-5 shadow-sm">
+            <h2 className="text-xl font-bold flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary" />
               Course topics
             </h2>
             <div className="mt-4 space-y-4">
               {topicGroups.map(([sectionName, topics]) => (
-                <div key={sectionName} className="rounded-lg border p-3 tilt-3d">
-                  <p className="text-sm font-semibold">{sectionName}</p>
+                <div
+                  key={sectionName}
+                  className="rounded-lg border bg-slate-50 dark:bg-slate-800 p-4 transition-all"
+                >
+                  <p className="text-sm font-bold text-slate-800 dark:text-slate-100">
+                    {sectionName}
+                  </p>
                   <ul className="mt-2 space-y-1 text-sm text-muted-foreground list-disc pl-5">
                     {topics.map((topic, index) => (
                       <li key={`${sectionName}-${topic}-${index}`}>{topic}</li>
@@ -143,7 +161,9 @@ const CoursePreviewPage = async ({
                 </div>
               ))}
               {topicGroups.length === 0 && (
-                <p className="text-sm text-muted-foreground">Topics will be added soon.</p>
+                <p className="text-sm text-muted-foreground">
+                  Topics will be added soon.
+                </p>
               )}
             </div>
           </div>

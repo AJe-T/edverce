@@ -2,11 +2,7 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-const CourseIdPage = async ({
-  params
-}: {
-  params: { courseId: string; }
-}) => {
+const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -23,17 +19,17 @@ const CourseIdPage = async ({
           isPublished: true,
         },
         orderBy: {
-          position: "asc"
-        }
-      }
-    }
+          position: "asc",
+        },
+      },
+    },
   });
 
   if (!course) {
     return redirect("/");
   }
 
-  const purchase = await db.purchase.findUnique({
+  let purchase = await db.purchase.findUnique({
     where: {
       userId_courseId: {
         userId,
@@ -41,6 +37,14 @@ const CourseIdPage = async ({
       },
     },
   });
+
+  if (purchase) {
+    const threeMonthsAgo = new Date();
+    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+    if (purchase.createdAt < threeMonthsAgo) {
+      purchase = null;
+    }
+  }
 
   if (!purchase) {
     return redirect(`/course-preview/${course.id}`);
@@ -51,6 +55,6 @@ const CourseIdPage = async ({
   }
 
   return redirect(`/courses/${course.id}/chapters/${course.chapters[0].id}`);
-}
- 
+};
+
 export default CourseIdPage;

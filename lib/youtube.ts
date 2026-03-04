@@ -34,5 +34,6 @@ export const getYoutubeEmbedUrl = (url: string) => {
     return null;
   }
 
-  return `https://www.youtube.com/embed/${videoId}?rel=0`;
+  // Use youtube-nocookie.com for better privacy and restrict features
+  return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&controls=1&disablekb=0&fs=1&iv_load_policy=3&showinfo=0`;
 };

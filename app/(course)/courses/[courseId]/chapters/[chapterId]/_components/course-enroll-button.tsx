@@ -35,7 +35,9 @@ export const CourseEnrollButton = ({
       const redirectUrl = response.data?.redirectUrl as string | undefined;
 
       if (!redirectUrl) {
-        setPaymentError("Unable to initialize PhonePe checkout. Please try again.");
+        setPaymentError(
+          "Unable to initialize PhonePe checkout. Please try again.",
+        );
         toast.error("Unable to initialize PhonePe checkout");
         return;
       }
@@ -48,24 +50,25 @@ export const CourseEnrollButton = ({
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="w-full md:w-auto space-y-2">
       <Button
         onClick={onClick}
         disabled={isLoading}
-        size="sm"
-        className="w-full md:w-auto"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl h-14 shadow-md hover:shadow-lg transition-all border-0 text-lg font-bold"
       >
-        {isLoading ? (
-          <span className="flex items-center gap-2">
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Redirecting...
-          </span>
-        ) : (
-          <>{ctaLabel || `Proceed to pay ${formatPrice(price)}`}</>
-        )}
+        <div className="relative flex items-center justify-center w-full">
+          {isLoading ? (
+            <span className="flex items-center gap-2">
+              <Loader2 className="h-5 w-5 animate-spin text-white" />
+              Processing...
+            </span>
+          ) : (
+            <>{ctaLabel || `Unlock Now for ${formatPrice(price)}`}</>
+          )}
+        </div>
       </Button>
 
       {paymentError && (
@@ -85,5 +88,5 @@ export const CourseEnrollButton = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
