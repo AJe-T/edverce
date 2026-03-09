@@ -115,90 +115,97 @@ export const CertificateClient = ({
         </div>
       </div>
 
-      {/* The Printable Certificate Container */}
-      <div
-        ref={certificateRef}
-        className="w-full max-w-5xl aspect-auto sm:aspect-[1.414/1] bg-[#0A0F1C] relative border border-slate-800 p-2 sm:p-6 rounded-none sm:rounded-sm shadow-2xl certificate-print-container overflow-hidden"
-      >
-        {/* Certificate Inner Border & Background styling */}
-        <div className="w-full h-full border-2 border-blue-500/20 bg-[#060B14] relative p-8 sm:p-16 flex flex-col items-center justify-center text-center">
-          {/* Decorative Corner Accents */}
-          <div className="absolute top-4 left-4 w-16 h-16 border-t-2 border-l-2 border-blue-500/50"></div>
-          <div className="absolute top-4 right-4 w-16 h-16 border-t-2 border-r-2 border-blue-500/50"></div>
-          <div className="absolute bottom-4 left-4 w-16 h-16 border-b-2 border-l-2 border-blue-500/50"></div>
-          <div className="absolute bottom-4 right-4 w-16 h-16 border-b-2 border-r-2 border-blue-500/50"></div>
+      {/* Mobile Wrapper to preserve strict 1024px size */}
+      <div className="w-full max-w-[1024px] overflow-x-auto pb-8 -mx-6 px-6 sm:mx-0 sm:px-0">
+        <div className="min-w-[900px] w-[1024px] max-w-full origin-top-left sm:origin-top transform sm:scale-100">
+          {/* The Printable Certificate Container */}
+          <div
+            ref={certificateRef}
+            className="w-full aspect-[1.414/1] bg-[#0A0F1C] relative border border-slate-800 p-6 rounded-sm shadow-2xl certificate-print-container overflow-hidden"
+          >
+            {/* Certificate Inner Border & Background styling */}
+            <div className="w-full h-full border-2 border-blue-500/20 bg-[#060B14] relative p-16 flex flex-col items-center justify-center text-center">
+              {/* Decorative Corner Accents */}
+              <div className="absolute top-4 left-4 w-16 h-16 border-t-2 border-l-2 border-blue-500/50"></div>
+              <div className="absolute top-4 right-4 w-16 h-16 border-t-2 border-r-2 border-blue-500/50"></div>
+              <div className="absolute bottom-4 left-4 w-16 h-16 border-b-2 border-l-2 border-blue-500/50"></div>
+              <div className="absolute bottom-4 right-4 w-16 h-16 border-b-2 border-r-2 border-blue-500/50"></div>
 
-          {/* Subtle Grid / Watermark Background */}
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiLz48L3N2Zz4=')] opacity-50 pointer-events-none"></div>
+              {/* Subtle Grid / Watermark Background */}
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiLz48L3N2Zz4=')] opacity-50 pointer-events-none"></div>
 
-          {/* Glowing Background Blob inside cert */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/5 rounded-full filter blur-[100px] pointer-events-none transform-gpu"></div>
+              {/* Glowing Background Blob inside cert */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/5 rounded-full filter blur-[100px] pointer-events-none transform-gpu"></div>
 
-          {/* Certificate Content */}
-          <div className="relative z-10 w-full flex flex-col items-center">
-            {/* Header / Logo Logo */}
-            <div className="flex items-center justify-center mb-12">
-              <img
-                src="/Logo.png"
-                alt="EdVerce Logo"
-                width="240"
-                style={{ objectFit: "contain", maxHeight: "70px" }}
-              />
-            </div>
-
-            <h3 className="text-blue-500 uppercase tracking-[0.3em] font-bold text-sm sm:text-base mb-6">
-              Certificate of Completion
-            </h3>
-
-            <p className="text-slate-400 text-lg mb-6 italic">
-              This is to certify that
-            </p>
-
-            <h1 className="text-4xl sm:text-6xl font-serif text-white font-bold mb-6 tracking-wide drop-shadow-md">
-              {certData.studentName}
-            </h1>
-
-            <p className="text-slate-400 text-lg max-w-2xl leading-relaxed mb-6">
-              has successfully completed all requirements, projects, and
-              assessments for the flagship program:
-            </p>
-
-            <h2 className="text-2xl sm:text-3xl font-bold text-blue-100 mb-16">
-              {certData.courseName}
-            </h2>
-
-            {/* Bottom Section: Signatures & Seal */}
-            <div className="w-full flex flex-col sm:flex-row items-end justify-between px-8 sm:px-16 mt-auto">
-              {/* Date */}
-              <div className="flex flex-col items-center mb-8 sm:mb-0">
-                <span className="text-white font-medium text-lg border-b border-white/20 pb-2 mb-2 px-8">
-                  {certData.issueDate}
-                </span>
-                <span className="text-slate-500 text-sm uppercase tracking-wider font-bold">
-                  Date Issued
-                </span>
-              </div>
-
-              {/* Seal/Badge */}
-              <div className="relative flex items-center justify-center mb-8 sm:mb-0 mx-8">
-                <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-[20px] transform-gpu"></div>
-                <div className="w-24 h-24 rounded-full border-2 border-blue-500/50 bg-[#0A0F1C] flex items-center justify-center relative z-10 shadow-[0_0_30px_rgba(37,99,235,0.3)]">
-                  <Medal className="w-10 h-10 text-blue-500" />
+              {/* Certificate Content */}
+              <div className="relative z-10 w-full flex flex-col items-center">
+                {/* Header / Logo Logo */}
+                <div className="flex items-center justify-center mb-12">
+                  <img
+                    src="/Logo.png"
+                    alt="EdVerce Logo"
+                    width="240"
+                    style={{ objectFit: "contain", maxHeight: "70px" }}
+                  />
                 </div>
-              </div>
 
-              {/* Signature */}
-              <div className="flex flex-col items-center">
-                {/* Simulated Signature Font */}
-                <span
-                  style={{ fontFamily: "'Brush Script MT', cursive, serif" }}
-                  className="text-blue-200 text-4xl border-b border-white/20 pb-2 mb-2 px-8 opacity-90"
-                >
-                  {certData.instructorName}
-                </span>
-                <span className="text-slate-500 text-sm uppercase tracking-wider font-bold">
-                  {certData.instructorRole}
-                </span>
+                <h3 className="text-blue-500 uppercase tracking-[0.3em] font-bold text-base mb-6">
+                  Certificate of Completion
+                </h3>
+
+                <p className="text-slate-400 text-lg mb-6 italic">
+                  This is to certify that
+                </p>
+
+                <h1 className="text-6xl font-serif text-white font-bold mb-6 tracking-wide drop-shadow-md">
+                  {certData.studentName}
+                </h1>
+
+                <p className="text-slate-400 text-lg max-w-2xl leading-relaxed mb-6">
+                  has successfully completed all requirements, projects, and
+                  assessments for the flagship program:
+                </p>
+
+                <h2 className="text-3xl font-bold text-blue-100 mb-16">
+                  {certData.courseName}
+                </h2>
+
+                {/* Bottom Section: Signatures & Seal */}
+                <div className="w-full flex flex-row items-end justify-between px-16 mt-auto">
+                  {/* Date */}
+                  <div className="flex flex-col items-center mb-0">
+                    <span className="text-white font-medium text-lg border-b border-white/20 pb-2 mb-2 px-8">
+                      {certData.issueDate}
+                    </span>
+                    <span className="text-slate-500 text-sm uppercase tracking-wider font-bold">
+                      Date Issued
+                    </span>
+                  </div>
+
+                  {/* Seal/Badge */}
+                  <div className="relative flex items-center justify-center mb-0 mx-8">
+                    <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-[20px] transform-gpu"></div>
+                    <div className="w-24 h-24 rounded-full border-2 border-blue-500/50 bg-[#0A0F1C] flex items-center justify-center relative z-10 shadow-[0_0_30px_rgba(37,99,235,0.3)]">
+                      <Medal className="w-10 h-10 text-blue-500" />
+                    </div>
+                  </div>
+
+                  {/* Signature */}
+                  <div className="flex flex-col items-center">
+                    {/* Simulated Signature Font */}
+                    <span
+                      style={{
+                        fontFamily: "'Brush Script MT', cursive, serif",
+                      }}
+                      className="text-blue-200 text-4xl border-b border-white/20 pb-2 mb-2 px-8 opacity-90"
+                    >
+                      {certData.instructorName}
+                    </span>
+                    <span className="text-slate-500 text-sm uppercase tracking-wider font-bold">
+                      {certData.instructorRole}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

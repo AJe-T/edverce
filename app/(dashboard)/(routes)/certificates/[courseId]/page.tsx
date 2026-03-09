@@ -81,10 +81,27 @@ const CertificatePage = async ({
     // safe fallback
   }
 
+  const userProgressList = await db.userProgress.findMany({
+    where: {
+      userId: targetUserId,
+      chapterId: {
+        in: course.chapters.map((c) => c.id),
+      },
+      isCompleted: true,
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+    take: 1,
+  });
+
+  const completionDate =
+    userProgressList.length > 0 ? userProgressList[0].updatedAt : new Date();
+
   const certData = {
     studentName,
     courseName: course.title,
-    issueDate: new Date().toLocaleDateString("en-US", {
+    issueDate: completionDate.toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",

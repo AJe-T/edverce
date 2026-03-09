@@ -10,6 +10,7 @@ import {
   Users,
   Megaphone,
   Terminal,
+  MessageSquare,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -63,6 +64,11 @@ const teacherRoutes = [
     icon: Users,
     label: "Students",
     href: "/teacher/students",
+  },
+  {
+    icon: MessageSquare,
+    label: "Queries",
+    href: "/teacher/queries",
   },
 ];
 

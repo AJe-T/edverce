@@ -140,36 +140,51 @@ export const CourseIntroCheckout = ({
           <Tag className="h-4 w-4" />
           Have a promotional code?
         </div>
-        <div className="flex items-center gap-2">
-          <Input
-            value={couponCode}
-            onChange={(event) =>
-              setCouponCode(event.target.value.toUpperCase())
-            }
-            placeholder="e.g. WELCOME10"
-            disabled={isApplyingCoupon}
-            className="bg-white dark:bg-slate-900 shadow-sm border-slate-200 dark:border-slate-800"
-          />
-          <Button
-            type="button"
-            variant="default"
-            onClick={onApplyCoupon}
-            disabled={isApplyingCoupon}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            {isApplyingCoupon ? (
-              <span className="flex items-center gap-1">
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              </span>
-            ) : (
-              "Apply"
-            )}
-          </Button>
-        </div>
-        {appliedCoupon && (
-          <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-            {appliedCoupon} applied successfully.
-          </p>
+        {appliedCoupon ? (
+          <div className="flex flex-col gap-2">
+            <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+              {appliedCoupon} applied successfully.
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setAppliedCoupon(null);
+                setDiscountInPaise(0);
+                setCouponCode("");
+              }}
+              className="w-full text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 border-red-200 dark:border-red-900/30"
+            >
+              Remove Coupon
+            </Button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <Input
+              value={couponCode}
+              onChange={(event) =>
+                setCouponCode(event.target.value.toUpperCase())
+              }
+              placeholder="e.g. WELCOME10"
+              disabled={isApplyingCoupon}
+              className="bg-white dark:bg-slate-900 shadow-sm border-slate-200 dark:border-slate-800"
+            />
+            <Button
+              type="button"
+              variant="default"
+              onClick={onApplyCoupon}
+              disabled={isApplyingCoupon || !couponCode.trim()}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              {isApplyingCoupon ? (
+                <span className="flex items-center gap-1">
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                </span>
+              ) : (
+                "Apply"
+              )}
+            </Button>
+          </div>
         )}
       </div>
 

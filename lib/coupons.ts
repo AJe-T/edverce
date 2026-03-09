@@ -55,10 +55,47 @@ const normalizeCode = (code: string) => code.trim().toUpperCase();
 
 export const findCoupon = (couponCode: string) => {
   const normalizedCode = normalizeCode(couponCode);
-  return parseCouponConfig().find((coupon) => normalizeCode(coupon.code) === normalizedCode);
+  return parseCouponConfig().find(
+    (coupon) => normalizeCode(coupon.code) === normalizedCode,
+  );
 };
 
-export const quoteCoupon = (amountInPaise: number, couponCode?: string | null): CouponQuote => {
+import { db } from "@/lib/db";
+
+export const findDbCoupon = async (couponCode: string) => {
+  const normalizedCode = normalizeCode(couponCode);
+  const dbCoupon = await db.coupon.findUnique({
+    where: { code: normalizedCode },
+  });
+
+  if (!dbCoupon) return null;
+
+  const now = new Date();
+  if (now < dbCoupon.fromDate || now > dbCoupon.toDate) {
+    return null;
+  }
+
+  // Check limit if applicable
+  if (
+    dbCoupon.limit !== null &&
+    dbCoupon.limit !== undefined &&
+    dbCoupon.used >= dbCoupon.limit
+  ) {
+    return null;
+  }
+
+  return {
+    code: dbCoupon.code,
+    type: "PERCENT" as const,
+    value: dbCoupon.discountPercentage,
+    isActive: true,
+  };
+};
+
+export const quoteCoupon = async (
+  amountInPaise: number,
+  couponCode?: string | null,
+): Promise<CouponQuote> => {
   if (!couponCode || couponCode.trim().length === 0) {
     return {
       applied: false,
@@ -69,7 +106,11 @@ export const quoteCoupon = (amountInPaise: number, couponCode?: string | null): 
     };
   }
 
-  const coupon = findCoupon(couponCode);
+  let coupon = findCoupon(couponCode);
+
+  if (!coupon) {
+    coupon = (await findDbCoupon(couponCode)) || undefined;
+  }
 
   if (!coupon || !coupon.isActive) {
     return {
@@ -82,7 +123,10 @@ export const quoteCoupon = (amountInPaise: number, couponCode?: string | null): 
     };
   }
 
-  if (coupon.minOrderAmountInPaise && amountInPaise < coupon.minOrderAmountInPaise) {
+  if (
+    coupon.minOrderAmountInPaise &&
+    amountInPaise < coupon.minOrderAmountInPaise
+  ) {
     return {
       applied: false,
       couponCode: null,
@@ -111,6 +155,9 @@ export const quoteCoupon = (amountInPaise: number, couponCode?: string | null): 
     originalAmountInPaise: amountInPaise,
     discountInPaise,
     finalAmountInPaise,
-    message: discountInPaise > 0 ? "Coupon applied successfully." : "Coupon did not change the amount.",
+    message:
+      discountInPaise > 0
+        ? "Coupon applied successfully."
+        : "Coupon did not change the amount.",
   };
 };

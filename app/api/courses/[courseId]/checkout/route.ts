@@ -53,7 +53,10 @@ export async function POST(
     }
 
     const originalAmountInPaise = Math.round(course.price * 100);
-    const couponQuote = quoteCoupon(originalAmountInPaise, body?.couponCode);
+    const couponQuote = await quoteCoupon(
+      originalAmountInPaise,
+      body?.couponCode,
+    );
     const amountInPaise = couponQuote.finalAmountInPaise;
 
     // Temporary fallback: if PhonePe credentials are missing, auto-enroll.

@@ -14,8 +14,38 @@ import {
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 
+import axios from "axios";
+import toast from "react-hot-toast";
+
 export default function Contact() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    organization: "",
+    message: "",
+  });
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+      await axios.post("/api/contact", formData);
+      toast.success("Message sent successfully!");
+      setFormData({ name: "", email: "", organization: "", message: "" });
+    } catch (error: any) {
+      console.error(error);
+      const errorMessage = error?.response?.data || "Something went wrong";
+      toast.error(
+        typeof errorMessage === "string"
+          ? errorMessage
+          : "Something went wrong",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#060B14] text-slate-300 font-sans selection:bg-blue-500/30 overflow-hidden">
@@ -136,42 +166,64 @@ export default function Contact() {
               className="glass-panel p-8 md:p-10 rounded-3xl border border-white/5 reveal-on-scroll opacity-0 translate-y-10 delay-200"
               style={{ animation: "fade-in 1s ease-out 0.2s forwards" }}
             >
-              <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+              <form className="space-y-5" onSubmit={onSubmit}>
                 <div>
                   <input
                     type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
+                    disabled={isLoading}
                     placeholder="Your name"
-                    className="w-full bg-[#060B14] border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                    className="w-full bg-[#060B14] border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all disabled:opacity-50"
                   />
                 </div>
                 <div>
                   <input
                     type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    disabled={isLoading}
                     placeholder="Your email"
-                    className="w-full bg-[#060B14] border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                    className="w-full bg-[#060B14] border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all disabled:opacity-50"
                   />
                 </div>
                 <div>
                   <input
                     type="text"
+                    value={formData.organization}
+                    onChange={(e) =>
+                      setFormData({ ...formData, organization: e.target.value })
+                    }
+                    disabled={isLoading}
                     placeholder="Organization"
-                    className="w-full bg-[#060B14] border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                    className="w-full bg-[#060B14] border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all disabled:opacity-50"
                   />
                 </div>
                 <div>
                   <textarea
                     rows={4}
+                    required
+                    value={formData.message}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
+                    disabled={isLoading}
                     placeholder="Tell us what you need..."
-                    className="w-full bg-[#060B14] border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all resize-none"
+                    className="w-full bg-[#060B14] border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all resize-none disabled:opacity-50"
                   ></textarea>
                 </div>
-                <button className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-colors shadow-[0_0_20px_rgba(37,99,235,0.2)] hover:shadow-[0_0_30px_rgba(37,99,235,0.4)]">
-                  Send message
+                <button
+                  disabled={isLoading}
+                  className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-colors shadow-[0_0_20px_rgba(37,99,235,0.2)] hover:shadow-[0_0_30px_rgba(37,99,235,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? "Sending..." : "Send message"}
                 </button>
-                <p className="text-xs text-slate-500 text-center pt-2">
-                  This demo form is static. Integrate your email service to
-                  enable submissions.
-                </p>
               </form>
             </div>
           </div>

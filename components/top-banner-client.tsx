@@ -7,21 +7,28 @@ export const TopBannerClient = ({ setting }: { setting: any }) => {
   const [isVisible, setIsVisible] = useState(false);
   const pathname = usePathname();
 
-  const isMarketingPage = pathname === "/";
+  const staticPages = ["/"];
+  const isStaticPage = staticPages.includes(pathname);
 
   useEffect(() => {
-    if (setting?.popupIsActive && setting?.popupTitle && isMarketingPage) {
+    if (setting?.popupIsActive && setting?.popupTitle && isStaticPage) {
       const closed = sessionStorage.getItem("topbar-closed");
       if (!closed) {
         setIsVisible(true);
         document.body.classList.add("has-topbar");
+      } else {
+        setIsVisible(false);
+        document.body.classList.remove("has-topbar");
       }
+    } else {
+      setIsVisible(false);
+      document.body.classList.remove("has-topbar");
     }
 
     return () => {
       document.body.classList.remove("has-topbar");
     };
-  }, [setting, isMarketingPage]);
+  }, [setting, isStaticPage]);
 
   if (!isVisible) return null;
 
