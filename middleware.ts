@@ -14,7 +14,12 @@ export default authMiddleware({
     "/refund",
     "/api/uploadthing",
     "/api/contact",
+    "/api/courses(.*)",
+    "/api/courses/(.*)/purchase",
+    "/api/courses/:courseId/purchase",
+    /^\/api\/courses\/[^/]+\/purchase$/,
   ],
+  ignoredRoutes: ["/api/courses(.*)/purchase"],
 });
 
 export const config = {

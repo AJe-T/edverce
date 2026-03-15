@@ -1,25 +1,91 @@
-import { currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 import { getPhonePeOrderStatus } from "@/lib/phonepe";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { courseId: string } },
-) {
-  try {
-    const user = await currentUser();
-    const requestUrl = new URL(req.url);
-    const merchantOrderId = requestUrl.searchParams.get("merchantOrderId");
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || requestUrl.origin;
+const createBrowserRedirectResponse = (targetUrl: URL) => {
+  const destination = targetUrl.toString();
+  const escapedDestination = destination
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;");
 
-    if (!user || !user.id) {
-      return new NextResponse("Unauthorized", { status: 401 });
+  const html = `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content="0;url=${escapedDestination}" />
+    <title>Redirecting...</title>
+  </head>
+  <body>
+    <p>Redirecting to dashboard...</p>
+    <script>
+      (function () {
+        var url = ${JSON.stringify(destination)};
+        window.location.replace(url);
+        if (window.top && window.top !== window) window.top.location.href = url;
+        if (window.parent && window.parent !== window) window.parent.location.href = url;
+      })();
+    </script>
+    <noscript>
+      <a href="${escapedDestination}">Continue</a>
+    </noscript>
+  </body>
+</html>`;
+
+  return new NextResponse(html, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Redirect-To": destination,
+    },
+  });
+};
+
+const getMerchantOrderIdFromRequest = async (req: Request) => {
+  const requestUrl = new URL(req.url);
+  const fromQuery = requestUrl.searchParams.get("merchantOrderId");
+  if (fromQuery) return fromQuery;
+
+  if (req.method === "POST") {
+    const contentType = req.headers.get("content-type") || "";
+
+    if (contentType.includes("application/json")) {
+      const body = (await req.json().catch(() => ({}))) as {
+        merchantOrderId?: string;
+      };
+      return body.merchantOrderId || null;
     }
 
+    if (
+      contentType.includes("application/x-www-form-urlencoded") ||
+      contentType.includes("multipart/form-data")
+    ) {
+      const form = await req.formData().catch(() => null);
+      const fromForm = form?.get("merchantOrderId");
+      if (typeof fromForm === "string" && fromForm) {
+        return fromForm;
+      }
+    }
+  }
+
+  return null;
+};
+
+const handlePurchaseCallback = async (
+  req: Request,
+  { params }: { params: { courseId: string } },
+) => {
+  try {
+    const requestUrl = new URL(req.url);
+    const merchantOrderId = await getMerchantOrderIdFromRequest(req);
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || requestUrl.origin;
+    const statusQuery = new URL(`${appUrl}/dashboard`);
+
     if (!merchantOrderId) {
-      return new NextResponse("Invalid payment payload", { status: 400 });
+      statusQuery.searchParams.set("payment", "failed");
+      statusQuery.searchParams.set("reason", "missing_order_id");
+      return createBrowserRedirectResponse(statusQuery);
     }
 
     const course = await db.course.findUnique({
@@ -30,7 +96,9 @@ export async function GET(
     });
 
     if (!course) {
-      return new NextResponse("Course not found", { status: 404 });
+      statusQuery.searchParams.set("payment", "failed");
+      statusQuery.searchParams.set("reason", "course_not_found");
+      return createBrowserRedirectResponse(statusQuery);
     }
 
     const paymentStatus = await getPhonePeOrderStatus(merchantOrderId);
@@ -41,38 +109,41 @@ export async function GET(
       ) ||
       false;
 
-    const statusQuery = new URL(`${appUrl}/courses/${params.courseId}`);
-
     if (!paid) {
       statusQuery.searchParams.set("payment", "failed");
       statusQuery.searchParams.set("state", paymentStatus.state);
-      return NextResponse.redirect(statusQuery);
-    }
-
-    if (
-      paymentStatus.metaInfo?.udf1 &&
-      paymentStatus.metaInfo.udf1 !== user.id
-    ) {
-      return new NextResponse("Forbidden", { status: 403 });
+      statusQuery.searchParams.set("courseId", params.courseId);
+      return createBrowserRedirectResponse(statusQuery);
     }
 
     if (
       paymentStatus.metaInfo?.udf2 &&
       paymentStatus.metaInfo.udf2 !== params.courseId
     ) {
-      return new NextResponse("Forbidden", { status: 403 });
+      statusQuery.searchParams.set("payment", "failed");
+      statusQuery.searchParams.set("reason", "course_mismatch");
+      statusQuery.searchParams.set("courseId", params.courseId);
+      return createBrowserRedirectResponse(statusQuery);
+    }
+
+    const paidUserId = paymentStatus.metaInfo?.udf1;
+    if (!paidUserId) {
+      statusQuery.searchParams.set("payment", "failed");
+      statusQuery.searchParams.set("reason", "missing_payment_metadata");
+      statusQuery.searchParams.set("courseId", params.courseId);
+      return createBrowserRedirectResponse(statusQuery);
     }
 
     await db.purchase.upsert({
       where: {
         userId_courseId: {
-          userId: user.id,
+          userId: paidUserId,
           courseId: params.courseId,
         },
       },
       create: {
         courseId: params.courseId,
-        userId: user.id,
+        userId: paidUserId,
       },
       update: {
         createdAt: new Date(),
@@ -80,9 +151,30 @@ export async function GET(
     });
 
     statusQuery.searchParams.set("payment", "success");
-    return NextResponse.redirect(statusQuery);
+    statusQuery.searchParams.set("courseId", params.courseId);
+    return createBrowserRedirectResponse(statusQuery);
   } catch (error) {
     console.log("[COURSE_ID_PURCHASE]", error);
-    return new NextResponse("Internal Error", { status: 500 });
+    const requestUrl = new URL(req.url);
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || requestUrl.origin;
+    const statusQuery = new URL(`${appUrl}/dashboard`);
+    statusQuery.searchParams.set("payment", "failed");
+    statusQuery.searchParams.set("reason", "internal_error");
+    statusQuery.searchParams.set("courseId", params.courseId);
+    return createBrowserRedirectResponse(statusQuery);
   }
+};
+
+export async function GET(
+  req: Request,
+  ctx: { params: { courseId: string } },
+) {
+  return handlePurchaseCallback(req, ctx);
+}
+
+export async function POST(
+  req: Request,
+  ctx: { params: { courseId: string } },
+) {
+  return handlePurchaseCallback(req, ctx);
 }

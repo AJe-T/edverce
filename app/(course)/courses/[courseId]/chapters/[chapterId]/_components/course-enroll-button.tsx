@@ -32,7 +32,17 @@ export const CourseEnrollButton = ({
       const response = await axios.post(`/api/courses/${courseId}/checkout`, {
         couponCode,
       });
-      const redirectUrl = response.data?.redirectUrl as string | undefined;
+      const redirectUrl =
+        (response.data?.redirectUrl as string | undefined) ||
+        (response.data?.paymentUrl as string | undefined) ||
+        (response.data?.instrumentResponse?.redirectInfo?.url as
+          | string
+          | undefined) ||
+        (response.data?.data?.redirectUrl as string | undefined) ||
+        (response.data?.data?.paymentUrl as string | undefined) ||
+        (response.data?.data?.instrumentResponse?.redirectInfo?.url as
+          | string
+          | undefined);
 
       if (!redirectUrl) {
         setPaymentError(
@@ -44,7 +54,11 @@ export const CourseEnrollButton = ({
 
       window.location.assign(redirectUrl);
     } catch (error: any) {
-      const message = error?.response?.data || "Something went wrong";
+      const message =
+        error?.response?.data?.message ||
+        error?.response?.data ||
+        error?.message ||
+        "Something went wrong";
       setPaymentError(message);
       toast.error(message);
     } finally {

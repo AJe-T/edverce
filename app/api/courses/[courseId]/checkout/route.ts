@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 
 import { db } from "@/lib/db";
-import { createPhonePePayment } from "@/lib/phonepe";
+import { createPhonePePayment, getPhonePeRedirectUrl } from "@/lib/phonepe";
 import { quoteCoupon } from "@/lib/coupons";
 
 export async function POST(
@@ -59,48 +59,12 @@ export async function POST(
     );
     const amountInPaise = couponQuote.finalAmountInPaise;
 
-    // Temporary fallback: if PhonePe credentials are missing, auto-enroll.
-    // PhonePe flow remains intact and will be used once credentials are set.
-    const hasPhonePeCreds =
-      !!process.env.PHONEPE_CLIENT_ID && !!process.env.PHONEPE_CLIENT_SECRET;
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(req.url).origin;
 
-    if (!hasPhonePeCreds) {
-      await db.purchase.upsert({
-        where: {
-          userId_courseId: {
-            userId: user.id,
-            courseId: params.courseId,
-          },
-        },
-        create: {
-          userId: user.id,
-          courseId: params.courseId,
-        },
-        update: {
-          createdAt: new Date(),
-        },
-      });
-
-      const redirectUrl = `${appUrl}/courses/${params.courseId}?payment=success&mode=bypass`;
-      return NextResponse.json({
-        amount: amountInPaise,
-        originalAmount: originalAmountInPaise,
-        discountAmount: couponQuote.discountInPaise,
-        couponCode: couponQuote.couponCode,
-        currency: "INR",
-        state: "COMPLETED",
-        redirectUrl,
-        courseTitle: course.title,
-        userName: user.firstName || user.username || "Learner",
-        userEmail: user.emailAddresses?.[0]?.emailAddress || "",
-      });
-    }
-
-    const merchantOrderId = `COURSE_${course.id}_${Date.now()}_${crypto
-      .randomUUID()
-      .replace(/-/g, "")
-      .slice(0, 8)}`;
+    const shortCourseId = course.id.replace(/[^a-zA-Z0-9]/g, "").slice(-12);
+    const timePart = Date.now().toString(36);
+    const randomPart = crypto.randomUUID().replace(/-/g, "").slice(0, 10);
+    const merchantOrderId = `CRS_${shortCourseId}_${timePart}_${randomPart}`;
     const callbackUrl = `${appUrl}/api/courses/${course.id}/purchase?merchantOrderId=${encodeURIComponent(
       merchantOrderId,
     )}`;
@@ -112,6 +76,13 @@ export async function POST(
       courseId: course.id,
       userId: user.id,
     });
+    const redirectUrl = getPhonePeRedirectUrl(phonePeOrder);
+
+    if (!redirectUrl) {
+      throw new Error(
+        `PhonePe checkout URL missing. state=${phonePeOrder.state || "UNKNOWN"} code=${phonePeOrder.code || "NA"} message=${phonePeOrder.message || "NA"}`,
+      );
+    }
 
     return NextResponse.json({
       amount: amountInPaise,
@@ -122,13 +93,18 @@ export async function POST(
       merchantOrderId,
       phonePeOrderId: phonePeOrder.orderId,
       state: phonePeOrder.state,
-      redirectUrl: phonePeOrder.redirectUrl,
+      redirectUrl,
       courseTitle: course.title,
       userName: user.firstName || user.username || "Learner",
       userEmail: user.emailAddresses?.[0]?.emailAddress || "",
     });
   } catch (error) {
     console.log("[COURSE_ID_CHECKOUT]", error);
-    return new NextResponse("PhonePe is not configured", { status: 500 });
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Unable to initialize PhonePe checkout";
+
+    return NextResponse.json({ message }, { status: 500 });
   }
 }

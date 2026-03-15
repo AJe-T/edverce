@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true",
+  // Run analyzer only for production builds (e.g. `npm run analyze`)
+  enabled:
+    process.env.ANALYZE === "true" && process.env.NODE_ENV === "production",
 });
 
 const nextConfig = {

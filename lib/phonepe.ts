@@ -13,6 +13,30 @@ type CreatePhonePePaymentInput = {
   userId: string;
 };
 
+export type PhonePeCreatePaymentResponse = {
+  orderId?: string;
+  state?: string;
+  expireAt?: number;
+  redirectUrl?: string;
+  code?: string;
+  message?: string;
+  data?: {
+    redirectUrl?: string;
+    paymentUrl?: string;
+    instrumentResponse?: {
+      redirectInfo?: {
+        url?: string;
+      };
+    };
+  };
+  paymentUrl?: string;
+  instrumentResponse?: {
+    redirectInfo?: {
+      url?: string;
+    };
+  };
+};
+
 const getPhonePeBaseUrl = () => {
   return process.env.PHONEPE_BASE_URL || "https://api-preprod.phonepe.com/apis/pg-sandbox";
 };
@@ -106,7 +130,9 @@ const phonePeRequest = async <T>(path: string, init?: RequestInit): Promise<T> =
   return (await response.json()) as T;
 };
 
-export const createPhonePePayment = async (input: CreatePhonePePaymentInput) => {
+export const createPhonePePayment = async (
+  input: CreatePhonePePaymentInput,
+) => {
   const payload = {
     merchantOrderId: input.merchantOrderId,
     amount: input.amount,
@@ -123,17 +149,23 @@ export const createPhonePePayment = async (input: CreatePhonePePaymentInput) => 
     },
   };
 
-  return await phonePeRequest<{
-    orderId: string;
-    state: string;
-    expireAt: number;
-    redirectUrl?: string;
-    code?: string;
-    message?: string;
-  }>("/checkout/v2/pay", {
+  return await phonePeRequest<PhonePeCreatePaymentResponse>("/checkout/v2/pay", {
     method: "POST",
     body: JSON.stringify(payload),
   });
+};
+
+export const getPhonePeRedirectUrl = (
+  paymentResponse: PhonePeCreatePaymentResponse,
+) => {
+  return (
+    paymentResponse.redirectUrl ||
+    paymentResponse.paymentUrl ||
+    paymentResponse.instrumentResponse?.redirectInfo?.url ||
+    paymentResponse.data?.redirectUrl ||
+    paymentResponse.data?.paymentUrl ||
+    paymentResponse.data?.instrumentResponse?.redirectInfo?.url
+  );
 };
 
 export const getPhonePeOrderStatus = async (merchantOrderId: string) => {
