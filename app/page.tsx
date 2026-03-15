@@ -498,8 +498,9 @@ export default function App() {
                   </div>
                 </div>
 
-                <Dialog>
-                  <DialogTrigger asChild>
+                <div className="flex flex-wrap gap-4 mt-8">
+                  <Dialog>
+                    <DialogTrigger asChild>
                     <button className="self-start bg-white text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition-colors flex items-center gap-2">
                       View Curriculum <ArrowRight className="w-4 h-4" />
                     </button>
@@ -578,6 +579,12 @@ export default function App() {
                     </div>
                   </DialogContent>
                 </Dialog>
+                <Link href="/search">
+                  <button className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-500 transition-colors flex items-center gap-2 shadow-lg shadow-blue-500/30">
+                    Go to Courses <ArrowRight className="w-4 h-4" />
+                  </button>
+                </Link>
+              </div>
               </div>
             </div>
           </FadeIn>
@@ -630,8 +637,9 @@ export default function App() {
                   </div>
                 </div>
 
-                <Dialog>
-                  <DialogTrigger asChild>
+                <div className="flex flex-wrap gap-4 mt-8">
+                  <Dialog>
+                    <DialogTrigger asChild>
                     <button className="self-start bg-white text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition-colors flex items-center gap-2">
                       View Curriculum <ArrowRight className="w-4 h-4" />
                     </button>
@@ -710,6 +718,12 @@ export default function App() {
                     </div>
                   </DialogContent>
                 </Dialog>
+                <Link href="/search">
+                  <button className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-500 transition-colors flex items-center gap-2 shadow-lg shadow-indigo-500/30">
+                    Go to Courses <ArrowRight className="w-4 h-4" />
+                  </button>
+                </Link>
+              </div>
               </div>
 
               <div className="w-full md:w-5/12 aspect-video md:aspect-square bg-slate-900 rounded-2xl overflow-hidden relative border border-white/10">

@@ -53,7 +53,7 @@ export const OfferPopupClient = ({ setting }: { setting: any }) => {
         <img
           src={setting.popupImageUrl}
           alt="Special Offer"
-          className="w-full h-auto object-contain rounded-2xl"
+          className="w-full h-full max-h-[85vh] object-contain rounded-2xl"
         />
       </div>
     </div>

@@ -1,11 +1,8 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { CheckCircle, Clock } from "lucide-react";
 
 import { getDashboardCourses } from "@/actions/get-dashboard-courses";
-import { CoursesList } from "@/components/courses-list";
-
-import { InfoCard } from "../(root)/_components/info-card";
+import { DashboardClient } from "./_components/dashboard-client";
 
 export default async function DashboardPage() {
   const { userId } = auth();
@@ -29,26 +26,10 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-        <InfoCard
-          icon={Clock}
-          label="In Progress"
-          numberOfItems={coursesInProgress.length}
-        />
-        <InfoCard
-          icon={CheckCircle}
-          label="Completed"
-          numberOfItems={completedCourses.length}
-          variant="success"
-        />
-      </div>
-
-      <div className="mt-12 flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-          Your Courses
-        </h2>
-        <CoursesList items={[...coursesInProgress, ...completedCourses]} />
-      </div>
+      <DashboardClient 
+        completedCourses={completedCourses} 
+        coursesInProgress={coursesInProgress} 
+      />
     </div>
   );
 }

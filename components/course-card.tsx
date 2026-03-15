@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Sparkles } from "lucide-react";
 
-import { IconBadge } from "@/components/icon-badge";
 import { formatPrice } from "@/lib/format";
 import { CourseProgress } from "@/components/course-progress";
 
@@ -14,6 +13,7 @@ interface CourseCardProps {
   price: number;
   progress: number | null;
   category: string;
+  isPublished?: boolean;
 }
 
 export const CourseCard = ({
@@ -24,12 +24,14 @@ export const CourseCard = ({
   price,
   progress,
   category,
+  isPublished = true,
 }: CourseCardProps) => {
-  return (
-    <Link href={`/course-preview/${id}`}>
-      <div className="group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 h-full flex flex-col">
+  const content = (
+      <div className={`group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 h-full flex flex-col ${isPublished ? "shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" : "opacity-90 grayscale-[30%]"}`}>
         {/* Decorative background glow on hover */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-indigo-500/0 to-purple-500/0 group-hover:from-blue-500/5 group-hover:via-indigo-500/5 group-hover:to-purple-500/10 transition-all duration-500 pointer-events-none" />
+        {isPublished && (
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-indigo-500/0 to-purple-500/0 group-hover:from-blue-500/5 group-hover:via-indigo-500/5 group-hover:to-purple-500/10 transition-all duration-500 pointer-events-none" />
+        )}
 
         <div className="relative w-full aspect-video overflow-hidden">
           <Image
@@ -65,7 +67,11 @@ export const CourseCard = ({
             </div>
 
             <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
-              {progress !== null ? (
+              {progress === null ? (
+                <p className="text-lg font-extrabold text-slate-900 dark:text-white">
+                  {formatPrice(price)}
+                </p>
+              ) : (
                 <div className="w-full relative">
                   <div className="flex justify-between items-center mb-1.5">
                     <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
@@ -81,15 +87,35 @@ export const CourseCard = ({
                     value={progress}
                   />
                 </div>
-              ) : (
-                <p className="text-lg font-extrabold text-slate-900 dark:text-white">
-                  {formatPrice(price)}
-                </p>
               )}
             </div>
           </div>
         </div>
       </div>
-    </Link>
+  );
+
+  return (
+    <div className="relative h-full">
+      {isPublished ? (
+        <Link href={`/course-preview/${id}`}>
+          {content}
+        </Link>
+      ) : (
+        <div className="h-full relative overflow-hidden rounded-2xl cursor-not-allowed">
+          {content}
+          {/* Frosted glass overlay */}
+          <div className="absolute inset-0 z-10 bg-slate-950/20 dark:bg-[#020617]/60 backdrop-blur-[6px] flex items-center justify-center pointer-events-none transition-all">
+            {/* Glowing orb behind badge */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-20 bg-indigo-500/40 dark:bg-indigo-500/30 blur-[40px] rounded-full" />
+            
+            {/* Pill Badge */}
+            <div className="relative z-20 px-6 py-2.5 bg-black text-indigo-100 font-extrabold text-sm tracking-[0.2em] rounded-full shadow-[0_0_30px_rgba(79,70,229,0.3)] border border-indigo-500/20 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-indigo-400" />
+              <span>COMING SOON</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };

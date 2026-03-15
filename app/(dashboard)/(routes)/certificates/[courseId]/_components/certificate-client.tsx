@@ -1,10 +1,9 @@
 "use client";
 
-import { Share2, Download, Medal, GraduationCap } from "lucide-react";
+import { Download, Medal } from "lucide-react";
 import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import Image from "next/image";
 
 interface CertificateData {
   studentName: string;
@@ -12,6 +11,7 @@ interface CertificateData {
   issueDate: string;
   certificateId: string;
   instructorName: string;
+  instructorSignature: string;
   instructorRole: string;
 }
 
@@ -58,8 +58,8 @@ export const CertificateClient = ({
       // Center it strictly vertical if height is smaller
       const yPos = (pdf.internal.pageSize.getHeight() - pdfHeight) / 2;
 
-      pdf.addImage(imgData, "PNG", 0, yPos > 0 ? yPos : 0, pdfWidth, pdfHeight);
-      pdf.save(`${certData.studentName.replace(/\s+/g, "_")}_Certificate.pdf`);
+      pdf.addImage(imgData, "PNG", 0, Math.max(0, yPos), pdfWidth, pdfHeight);
+      pdf.save(`${certData.studentName.replaceAll(/\s+/g, "_")}_Certificate.pdf`);
     } catch (error) {
       console.error("Error generating PDF", error);
     } finally {
@@ -199,7 +199,7 @@ export const CertificateClient = ({
                       }}
                       className="text-blue-200 text-4xl border-b border-white/20 pb-2 mb-2 px-8 opacity-90"
                     >
-                      {certData.instructorName}
+                      {certData.instructorSignature}
                     </span>
                     <span className="text-slate-500 text-sm uppercase tracking-wider font-bold">
                       {certData.instructorRole}

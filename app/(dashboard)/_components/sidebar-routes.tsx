@@ -11,6 +11,7 @@ import {
   Megaphone,
   Terminal,
   MessageSquare,
+  PenTool,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -69,6 +70,11 @@ const teacherRoutes = [
     icon: MessageSquare,
     label: "Queries",
     href: "/teacher/queries",
+  },
+  {
+    icon: PenTool,
+    label: "Signatures",
+    href: "/teacher/signatures",
   },
 ];
 

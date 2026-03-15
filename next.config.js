@@ -1,8 +1,31 @@
 /** @type {import('next').NextConfig} */
+
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
 const nextConfig = {
   images: {
-    domains: ["utfs.io", "images.unsplash.com"],
+    // remotePatterns is safer and more flexible than 'domains'
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
   },
+  // Optional: Speeds up production builds by ignoring linting/typescript errors
+  // during the 'build' step (use with caution!)
+  // eslint: { ignoreDuringBuilds: true },
+  // typescript: { ignoreBuildErrors: true },
 };
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);

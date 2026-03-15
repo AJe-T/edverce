@@ -108,6 +108,7 @@ const CertificatePage = async ({
     }),
     certificateId,
     instructorName,
+    instructorSignature: course.certificateSignature || instructorName,
     instructorRole: "Course Creator",
   };
 

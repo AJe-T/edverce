@@ -25,7 +25,7 @@ export const columns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const msg = row.getValue("message") as string;
       return (
-        <div className="max-w-[400px] truncate" title={msg}>
+        <div className="whitespace-pre-wrap break-words min-w-[250px] max-w-[500px]" title={msg}>
           {msg}
         </div>
       );

@@ -11,7 +11,7 @@ const progressVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-secondary",
+        default: "bg-primary",
         success: "bg-emerald-700",
       },
     },
