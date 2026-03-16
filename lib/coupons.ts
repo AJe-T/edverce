@@ -21,14 +21,7 @@ const FALLBACK_COUPONS: Coupon[] = [
     code: "WELCOME10",
     type: "PERCENT",
     value: 10,
-    maxDiscountInPaise: 10000,
-    isActive: true,
-  },
-  {
-    code: "SAVE100",
-    type: "FLAT",
-    value: 10000,
-    minOrderAmountInPaise: 20000,
+    maxDiscountInPaise: 10000000,
     isActive: true,
   },
 ];
@@ -75,7 +68,6 @@ export const findDbCoupon = async (couponCode: string) => {
     return null;
   }
 
-  // Check limit if applicable
   if (
     dbCoupon.limit !== null &&
     dbCoupon.limit !== undefined &&

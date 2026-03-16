@@ -69,6 +69,13 @@ import {
   SiTypescript,
   SiCss3,
   SiTailwindcss,
+  SiDotenv,
+  SiNodedotjs,
+  SiGithub,
+  SiReact,
+  SiExpress,
+  SiPostman,
+  SiVercel,
 } from "react-icons/si";
 
 // --- Reusable Framer Motion Components ---
@@ -416,8 +423,23 @@ export default function App() {
                   <SiJavascript className="text-yellow-400 w-14 h-14" />
                   JavaScript
                 </div>
+                <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3 text-center">
+                  <SiMongodb className="text-green-500 w-14 h-14" />
+                  MongoDB
+                </div>
+                <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3 text-center">
+                  <SiTypescript className="text-blue-500 w-14 h-14" />
+                  TypeScript
+                </div>
+                <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3 text-center">
+                  <SiNodedotjs className="text-green-500 w-14 h-14" />
+                  Node.js
+                </div>
                 <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3">
                   <FaReact className="text-cyan-400 w-14 h-14" /> React
+                </div>
+                <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3">
+                  <SiExpress className="text-cyan-400 w-14 h-14" /> Express
                 </div>
                 <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3 text-center">
                   <SiTailwindcss className="text-teal-400 w-14 h-14" /> Tailwind
@@ -501,90 +523,90 @@ export default function App() {
                 <div className="flex flex-wrap gap-4 mt-8">
                   <Dialog>
                     <DialogTrigger asChild>
-                    <button className="self-start bg-white text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition-colors flex items-center gap-2">
-                      View Curriculum <ArrowRight className="w-4 h-4" />
+                      <button className="self-start bg-white text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition-colors flex items-center gap-2">
+                        View Curriculum <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-[#0A0F1C] border border-white/10 text-slate-300 max-w-2xl overflow-hidden">
+                      <DialogHeader>
+                        <DialogTitle className="text-2xl font-bold text-white mb-2">
+                          Full Stack Web Development
+                        </DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+                        <p className="text-slate-400 text-sm">
+                          This track is currently under heavy production. Here
+                          is a sneak peek at the modules you will master soon:
+                        </p>
+                        <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
+                          <h4 className="font-bold text-blue-400">
+                            Module 1: The Frontend Core
+                          </h4>
+                          <p className="text-sm">
+                            Semantic HTML5, Advanced CSS3 mechanics, CSS
+                            Variables, and Flexbox/Grid mastery.
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
+                          <h4 className="font-bold text-blue-400">
+                            Module 2: JavaScript & DOM Manipulation
+                          </h4>
+                          <p className="text-sm">
+                            ES6+ syntax, asynchronous programming, closures, and
+                            fetching APIs under the hood.
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
+                          <h4 className="font-bold text-blue-400">
+                            Module 3: React & Next.js Ecosystem
+                          </h4>
+                          <p className="text-sm">
+                            Server vs Client components, App Router, Hooks,
+                            Redux Toolkit, and Tailwind CSS.
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
+                          <h4 className="font-bold text-blue-400">
+                            Module 4: Scalable Backend APIs
+                          </h4>
+                          <p className="text-sm">
+                            Node.js, Express, MVC architecture, custom JWT
+                            authentication, and security.
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
+                          <h4 className="font-bold text-blue-400">
+                            Module 5: MongoDB & PostgreSQL
+                          </h4>
+                          <p className="text-sm">
+                            Prisma ORM, Mongoose, NoSQL vs SQL, robust
+                            relational models, and aggregation.
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
+                          <h4 className="font-bold text-blue-400">
+                            Module 6: Final Capstone Ship
+                          </h4>
+                          <p className="text-sm">
+                            Build a fully featured LMS/E-Commerce platform from
+                            scratch and deploy to AWS.
+                          </p>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                  <Link href="/search">
+                    <button className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-500 transition-colors flex items-center gap-2 shadow-lg shadow-blue-500/30">
+                      Go to Courses <ArrowRight className="w-4 h-4" />
                     </button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-[#0A0F1C] border border-white/10 text-slate-300 max-w-2xl overflow-hidden">
-                    <DialogHeader>
-                      <DialogTitle className="text-2xl font-bold text-white mb-2">
-                        Full Stack Web Development
-                      </DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
-                      <p className="text-slate-400 text-sm">
-                        This track is currently under heavy production. Here is
-                        a sneak peek at the modules you will master soon:
-                      </p>
-                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
-                        <h4 className="font-bold text-blue-400">
-                          Module 1: The Frontend Core
-                        </h4>
-                        <p className="text-sm">
-                          Semantic HTML5, Advanced CSS3 mechanics, CSS
-                          Variables, and Flexbox/Grid mastery.
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
-                        <h4 className="font-bold text-blue-400">
-                          Module 2: JavaScript & DOM Manipulation
-                        </h4>
-                        <p className="text-sm">
-                          ES6+ syntax, asynchronous programming, closures, and
-                          fetching APIs under the hood.
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
-                        <h4 className="font-bold text-blue-400">
-                          Module 3: React & Next.js Ecosystem
-                        </h4>
-                        <p className="text-sm">
-                          Server vs Client components, App Router, Hooks, Redux
-                          Toolkit, and Tailwind CSS.
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
-                        <h4 className="font-bold text-blue-400">
-                          Module 4: Scalable Backend APIs
-                        </h4>
-                        <p className="text-sm">
-                          Node.js, Express, MVC architecture, custom JWT
-                          authentication, and security.
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
-                        <h4 className="font-bold text-blue-400">
-                          Module 5: MongoDB & PostgreSQL
-                        </h4>
-                        <p className="text-sm">
-                          Prisma ORM, Mongoose, NoSQL vs SQL, robust relational
-                          models, and aggregation.
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
-                        <h4 className="font-bold text-blue-400">
-                          Module 6: Final Capstone Ship
-                        </h4>
-                        <p className="text-sm">
-                          Build a fully featured LMS/E-Commerce platform from
-                          scratch and deploy to AWS.
-                        </p>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-                <Link href="/search">
-                  <button className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-500 transition-colors flex items-center gap-2 shadow-lg shadow-blue-500/30">
-                    Go to Courses <ArrowRight className="w-4 h-4" />
-                  </button>
-                </Link>
-              </div>
+                  </Link>
+                </div>
               </div>
             </div>
           </FadeIn>
@@ -640,90 +662,90 @@ export default function App() {
                 <div className="flex flex-wrap gap-4 mt-8">
                   <Dialog>
                     <DialogTrigger asChild>
-                    <button className="self-start bg-white text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition-colors flex items-center gap-2">
-                      View Curriculum <ArrowRight className="w-4 h-4" />
+                      <button className="self-start bg-white text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition-colors flex items-center gap-2">
+                        View Curriculum <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-[#0A0F1C] border border-white/10 text-slate-300 max-w-2xl overflow-hidden">
+                      <DialogHeader>
+                        <DialogTitle className="text-2xl font-bold text-white mb-2">
+                          DSA & Interview Prep Path
+                        </DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+                        <p className="text-slate-400 text-sm">
+                          We are meticulously handcrafting 300+ problems and
+                          video explanations. Content arriving soon:
+                        </p>
+                        <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
+                          <h4 className="font-bold text-indigo-400">
+                            Phase 1: Time & Space Complexity
+                          </h4>
+                          <p className="text-sm">
+                            Big O notation, asymptotes, and memory models under
+                            the hood.
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
+                          <h4 className="font-bold text-indigo-400">
+                            Phase 2: Fundamental Data Structures
+                          </h4>
+                          <p className="text-sm">
+                            Arrays, Strings, Hashmaps, Linked Lists, Stacks, and
+                            Queues.
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
+                          <h4 className="font-bold text-indigo-400">
+                            Phase 3: Advanced Architectures
+                          </h4>
+                          <p className="text-sm">
+                            Trees, Graphs, Tries, Disjoint Sets (Union Find),
+                            and Segment Trees.
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
+                          <h4 className="font-bold text-indigo-400">
+                            Phase 4: The Algorithm Playbook
+                          </h4>
+                          <p className="text-sm">
+                            Two Pointers, Sliding Window, Deep/Breadth First
+                            Search, Dynamic Programming.
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
+                          <h4 className="font-bold text-indigo-400">
+                            Phase 5: Machine Coding Rounds
+                          </h4>
+                          <p className="text-sm">
+                            Build Twitter feed, LRU Cache, and DOM Tree
+                            transversal algorithms step by step.
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
+                          <h4 className="font-bold text-indigo-400">
+                            Phase 6: Mock Interviews
+                          </h4>
+                          <p className="text-sm">
+                            Behavioral rounds, resume optimization, and intense
+                            1-on-1 mock sessions.
+                          </p>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                  <Link href="/search">
+                    <button className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-500 transition-colors flex items-center gap-2 shadow-lg shadow-indigo-500/30">
+                      Go to Courses <ArrowRight className="w-4 h-4" />
                     </button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-[#0A0F1C] border border-white/10 text-slate-300 max-w-2xl overflow-hidden">
-                    <DialogHeader>
-                      <DialogTitle className="text-2xl font-bold text-white mb-2">
-                        DSA & Interview Prep Path
-                      </DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
-                      <p className="text-slate-400 text-sm">
-                        We are meticulously handcrafting 300+ problems and video
-                        explanations. Content arriving soon:
-                      </p>
-                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
-                        <h4 className="font-bold text-indigo-400">
-                          Phase 1: Time & Space Complexity
-                        </h4>
-                        <p className="text-sm">
-                          Big O notation, asymptotes, and memory models under
-                          the hood.
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
-                        <h4 className="font-bold text-indigo-400">
-                          Phase 2: Fundamental Data Structures
-                        </h4>
-                        <p className="text-sm">
-                          Arrays, Strings, Hashmaps, Linked Lists, Stacks, and
-                          Queues.
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
-                        <h4 className="font-bold text-indigo-400">
-                          Phase 3: Advanced Architectures
-                        </h4>
-                        <p className="text-sm">
-                          Trees, Graphs, Tries, Disjoint Sets (Union Find), and
-                          Segment Trees.
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
-                        <h4 className="font-bold text-indigo-400">
-                          Phase 4: The Algorithm Playbook
-                        </h4>
-                        <p className="text-sm">
-                          Two Pointers, Sliding Window, Deep/Breadth First
-                          Search, Dynamic Programming.
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
-                        <h4 className="font-bold text-indigo-400">
-                          Phase 5: Machine Coding Rounds
-                        </h4>
-                        <p className="text-sm">
-                          Build Twitter feed, LRU Cache, and DOM Tree
-                          transversal algorithms step by step.
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50 flex flex-col gap-2 relative overflow-hidden">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-l-xl"></div>
-                        <h4 className="font-bold text-indigo-400">
-                          Phase 6: Mock Interviews
-                        </h4>
-                        <p className="text-sm">
-                          Behavioral rounds, resume optimization, and intense
-                          1-on-1 mock sessions.
-                        </p>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-                <Link href="/search">
-                  <button className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-500 transition-colors flex items-center gap-2 shadow-lg shadow-indigo-500/30">
-                    Go to Courses <ArrowRight className="w-4 h-4" />
-                  </button>
-                </Link>
-              </div>
+                  </Link>
+                </div>
               </div>
 
               <div className="w-full md:w-5/12 aspect-video md:aspect-square bg-slate-900 rounded-2xl overflow-hidden relative border border-white/10">
