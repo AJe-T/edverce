@@ -2,6 +2,7 @@ import { currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 
+import { calculateCourseCheckoutAmounts } from "@/lib/course-pricing";
 import { db } from "@/lib/db";
 import { createPhonePePayment, getPhonePeRedirectUrl } from "@/lib/phonepe";
 import { quoteCoupon } from "@/lib/coupons";
@@ -57,7 +58,11 @@ export async function POST(
       originalAmountInPaise,
       body?.couponCode,
     );
-    const amountInPaise = couponQuote.finalAmountInPaise;
+    const pricing = calculateCourseCheckoutAmounts({
+      baseAmountInPaise: originalAmountInPaise,
+      discountInPaise: couponQuote.discountInPaise,
+    });
+    const amountInPaise = pricing.totalAmountInPaise;
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(req.url).origin;
 
@@ -88,6 +93,8 @@ export async function POST(
       amount: amountInPaise,
       originalAmount: originalAmountInPaise,
       discountAmount: couponQuote.discountInPaise,
+      subtotalAmount: pricing.subtotalInPaise,
+      gstAmount: pricing.gstInPaise,
       couponCode: couponQuote.couponCode,
       currency: "INR",
       merchantOrderId,

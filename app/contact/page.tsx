@@ -85,7 +85,7 @@ export default function Contact() {
               Contact us
             </h1>
             <p className="text-lg text-slate-400 max-w-2xl leading-relaxed">
-              Share your requirements and we will help you set up the right LMS
+              Share your requirements and we will help you set up the right Edverce
               workflow.
             </p>
           </div>
@@ -105,15 +105,15 @@ export default function Contact() {
                   <div>
                     <h4 className="text-white font-bold mb-1">Email</h4>
                     <a
-                      href="mailto:support@lmsplatform.com"
+                      href="mailto:support@edverce.com"
                       className="text-slate-400 hover:text-blue-400 transition-colors"
                     >
-                      support@lmsplatform.com
+                      support@edverce.com
                     </a>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
+                {/* <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 shrink-0 mt-1">
                     <Phone className="w-5 h-5" />
                   </div>
@@ -126,7 +126,7 @@ export default function Contact() {
                       +91 98765 43210
                     </a>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 shrink-0 mt-1">

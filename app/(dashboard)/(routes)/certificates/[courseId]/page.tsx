@@ -64,7 +64,7 @@ const CertificatePage = async ({
   const certIdChunk2 = targetUserId
     .substring(targetUserId.length - 4)
     .toUpperCase();
-  const certIdChunk3 = "LMS1";
+  const certIdChunk3 = "Edverce";
   const certificateId = `${certIdChunk1}-${certIdChunk2}-${certIdChunk3}`;
 
   let instructorName = "Course Instructor";

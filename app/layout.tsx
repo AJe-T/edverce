@@ -15,8 +15,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "LMS Platform",
-  description: "Modern LMS for creators and learners",
+  title: "Edverce",
+  description: "Learn anything, anywhere, anytime",
 };
 
 export default function RootLayout({

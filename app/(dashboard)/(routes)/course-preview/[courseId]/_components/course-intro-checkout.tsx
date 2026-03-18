@@ -1,12 +1,13 @@
 "use client";
 
 import axios from "axios";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { CheckCircle2, Loader2, Tag } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { calculateCourseCheckoutAmounts } from "@/lib/course-pricing";
 import { formatPrice } from "@/lib/format";
 import { CourseEnrollButton } from "@/app/(course)/courses/[courseId]/chapters/[chapterId]/_components/course-enroll-button";
 
@@ -26,17 +27,13 @@ export const CourseIntroCheckout = ({
   const [discountInPaise, setDiscountInPaise] = useState(0);
   const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
 
-  const baseAmountInPaise = Math.round(coursePrice * 100);
-  const subtotalInPaise = Math.max(0, baseAmountInPaise - discountInPaise);
-  const gstInPaise = Math.round(subtotalInPaise * 0.18);
-  const totalAmountInPaise = subtotalInPaise + gstInPaise;
-
-  const ctaLabel = useMemo(() => {
-    if (alreadyPurchased) {
-      return "Continue learning";
-    }
-    return `Proceed to pay ${formatPrice(totalAmountInPaise / 100)}`;
-  }, [alreadyPurchased, totalAmountInPaise]);
+  const pricing = calculateCourseCheckoutAmounts({
+    baseAmountInPaise: Math.round(coursePrice * 100),
+    discountInPaise,
+  });
+  const ctaLabel = alreadyPurchased
+    ? "Continue learning"
+    : `Proceed to pay ${formatPrice(pricing.totalAmountInPaise / 100)}`;
 
   const onApplyCoupon = async () => {
     if (!couponCode.trim()) {
@@ -48,7 +45,7 @@ export const CourseIntroCheckout = ({
       setIsApplyingCoupon(true);
       const response = await axios.post("/api/coupons/validate", {
         couponCode,
-        amountInPaise: baseAmountInPaise,
+        amountInPaise: pricing.baseAmountInPaise,
       });
 
       setAppliedCoupon(response.data.couponCode || couponCode.toUpperCase());
@@ -84,7 +81,7 @@ export const CourseIntroCheckout = ({
             Course Charges
           </span>
           <span className="text-slate-900 dark:text-white">
-            {formatPrice(baseAmountInPaise / 100)}
+            {formatPrice(pricing.baseAmountInPaise / 100)}
           </span>
         </div>
         {(discountInPaise > 0 || appliedCoupon) && (
@@ -98,13 +95,13 @@ export const CourseIntroCheckout = ({
         <div className="flex items-center justify-between border-t border-slate-200 dark:border-slate-700/50 pt-3 font-medium">
           <span className="text-slate-500 dark:text-slate-400">Subtotal</span>
           <span className="text-slate-900 dark:text-white">
-            {formatPrice(subtotalInPaise / 100)}
+            {formatPrice(pricing.subtotalInPaise / 100)}
           </span>
         </div>
         <div className="flex items-center justify-between font-medium">
           <span className="text-slate-500 dark:text-slate-400">GST (18%)</span>
           <span className="text-slate-900 dark:text-white">
-            {formatPrice(gstInPaise / 100)}
+            {formatPrice(pricing.gstInPaise / 100)}
           </span>
         </div>
         <div className="border-t border-slate-200 dark:border-slate-700/50 pt-3 mt-1 flex items-center justify-between">
@@ -112,7 +109,7 @@ export const CourseIntroCheckout = ({
             Total payable
           </span>
           <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
-            {formatPrice(totalAmountInPaise / 100)}
+            {formatPrice(pricing.totalAmountInPaise / 100)}
           </span>
         </div>
       </div>
@@ -128,7 +125,7 @@ export const CourseIntroCheckout = ({
         ) : (
           <CourseEnrollButton
             courseId={courseId}
-            price={totalAmountInPaise / 100}
+            price={pricing.totalAmountInPaise / 100}
             couponCode={appliedCoupon || undefined}
             ctaLabel={ctaLabel}
           />

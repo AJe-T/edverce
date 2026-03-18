@@ -82,10 +82,10 @@ export default function About() {
               style={{ animation: "fade-in 1s ease-out forwards" }}
             >
               <h1 className="text-5xl lg:text-7xl font-extrabold text-blue-500 leading-[1.1] tracking-tight mb-8">
-                About LMS Platform
+                About Edverce Platform
               </h1>
               <p className="text-lg text-slate-400 leading-relaxed">
-                LMS Platform helps educators and training teams create
+                Edverce Platform helps educators and training teams create
                 outcome-driven learning programs. We combine a clean authoring
                 workflow with learner progress intelligence.
               </p>
