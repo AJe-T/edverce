@@ -77,27 +77,23 @@ export const VideoPlayer = ({
         (embedUrl ? (
           <div
             className="relative w-full h-full rounded-2xl overflow-hidden bg-black group shadow-2xl border border-slate-800"
-            onContextMenu={(e) => e.preventDefault()} // Disable right click
+            onContextMenu={(e) => e.preventDefault()} 
           >
-            {/* Top Security Mask: Blocks title clicks, channel clicks, and 'Copy link' button */}
             <div
               className="absolute top-0 left-0 right-0 h-[70px] bg-transparent z-[50]"
               title="External actions disabled"
             />
 
-            {/* Bottom-Right Security Mask: Blocks the YouTube Logo click */}
             <div
               className="absolute bottom-[40px] right-0 w-[120px] h-[50px] bg-transparent z-[50]"
               title="External actions disabled"
             />
 
-            {/* Bottom-Left Security Mask: Blocks Watch on YouTube click */}
             <div
               className="absolute bottom-[40px] left-0 w-[150px] h-[60px] bg-transparent z-[50]"
               title="External actions disabled"
             />
 
-            {/* Top Right Visual Watermark (Covers the YouTube 'Copy link' functionality) */}
             <div className="absolute top-0 right-0 w-32 h-[60px] bg-[#000000] z-[60] flex items-center justify-end pr-4 pointer-events-none opacity-100">
               <span className="text-white/80 text-xs font-bold tracking-[0.2em]">
                 EDVERCE

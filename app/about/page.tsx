@@ -72,9 +72,7 @@ export default function About() {
       <MarketingHeader />
 
       <div className="animate-fade-in pt-40 pb-20 lg:pt-48 lg:pb-32 px-6">
-        {/* --- About Hero Section --- */}
         <section className="relative overflow-hidden mb-32">
-          {/* Background Glowing Blobs matching Home */}
           <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-600/20 rounded-full transform-gpu filter blur-[100px]" />
           <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-indigo-600/20 rounded-full transform-gpu filter blur-[100px]" />
 
@@ -107,7 +105,6 @@ export default function About() {
                 className="relative w-[500px] h-[350px] rounded-2xl glass-panel border border-white/10 shadow-2xl transition-transform duration-200 ease-out z-10 flex items-center justify-center p-12"
                 style={{ transformStyle: "preserve-3d" }}
               >
-                {/* Abstract UI representation matching the screenshot */}
                 <div
                   className="w-full h-full bg-[#0A0F1C] rounded-xl border border-white/5 p-8 flex flex-col justify-center gap-8 relative overflow-hidden"
                   style={{ transform: "translateZ(30px)" }}
@@ -128,7 +125,6 @@ export default function About() {
                   </div>
                 </div>
               </div>
-              {/* Decorative rings */}
               <div className="absolute inset-0 flex items-center justify-center z-0">
                 <div className="absolute w-[450px] h-[450px] border border-blue-500/10 rounded-full border-dashed"></div>
               </div>
@@ -136,7 +132,6 @@ export default function About() {
           </div>
         </section>
 
-        {/* --- Core Principles Cards --- */}
         <section className="max-w-7xl mx-auto mb-32">
           <div className="grid md:grid-cols-3 gap-6">
             <div
@@ -189,7 +184,6 @@ export default function About() {
           </div>
         </section>
 
-        {/* --- Product Journey (Vertical Timeline replacing grid) --- */}
         <section className="max-w-4xl mx-auto mb-32 relative">
           <div
             className="text-center mb-16 reveal-on-scroll opacity-0 translate-y-10"
@@ -201,10 +195,8 @@ export default function About() {
           </div>
 
           <div className="relative">
-            {/* Center Line */}
             <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-1 timeline-line transform md:-translate-x-1/2 rounded-full hidden sm:block"></div>
 
-            {/* Phase 1 */}
             <div
               className="reveal-on-scroll opacity-0 translate-y-10 relative flex flex-col md:flex-row items-center justify-between mb-16 group"
               style={{ animation: "fade-in 1s ease-out 0.2s forwards" }}
@@ -227,7 +219,6 @@ export default function About() {
               </div>
             </div>
 
-            {/* Phase 2 */}
             <div
               className="reveal-on-scroll opacity-0 translate-y-10 relative flex flex-col md:flex-row items-center justify-between mb-16 group"
               style={{ animation: "fade-in 1s ease-out 0.3s forwards" }}
@@ -250,7 +241,6 @@ export default function About() {
               </div>
             </div>
 
-            {/* Phase 3 */}
             <div
               className="reveal-on-scroll opacity-0 translate-y-10 relative flex flex-col md:flex-row items-center justify-between group"
               style={{ animation: "fade-in 1s ease-out 0.4s forwards" }}
@@ -275,7 +265,6 @@ export default function About() {
           </div>
         </section>
 
-        {/* --- What Drives Us --- */}
         <section className="max-w-7xl mx-auto mb-10">
           <h2
             className="text-3xl font-bold text-white mb-8 reveal-on-scroll opacity-0 translate-y-10"

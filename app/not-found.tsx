@@ -19,7 +19,6 @@ export default function NotFound() {
         }}
       />
 
-      {/* Background Glowing Blobs */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full transform-gpu filter blur-[150px] pointer-events-none animate-blob" />
 
       <div className="relative z-10 animate-fade-in">

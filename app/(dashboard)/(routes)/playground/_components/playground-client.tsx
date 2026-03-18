@@ -17,7 +17,6 @@ export const PlaygroundClient = () => {
           : "p-6 gap-4 h-[calc(100vh-80px)]",
       )}
     >
-      {/* Header Area */}
       <div className="flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-x-2">
           {!isFullscreen && (
@@ -60,9 +59,7 @@ export const PlaygroundClient = () => {
         </Button>
       </div>
 
-      {/* Iframe Area */}
       <div className="flex-grow w-full border border-border/60 rounded-xl overflow-hidden shadow-sm bg-slate-950 relative group">
-        {/* Anti-Leech Mask for CodeSandbox top-right logo */}
         <div
           className="absolute top-0 right-0 w-[150px] h-[50px] bg-transparent z-[50]"
           title="External jumping disabled."

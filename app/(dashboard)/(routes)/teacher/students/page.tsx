@@ -13,7 +13,6 @@ export default async function StudentsPage() {
     return redirect("/");
   }
 
-  // 1. Fetch courses owned by the teacher
   const courses = await db.course.findMany({
     where: {
       userId: userId,
@@ -28,7 +27,6 @@ export default async function StudentsPage() {
     },
   });
 
-  // 2. Extract unique student IDs from purchases
   const studentIds = new Set<string>();
   courses.forEach((course) => {
     course.purchases.forEach((purchase) => {
@@ -38,7 +36,6 @@ export default async function StudentsPage() {
 
   const uniqueStudentIds = Array.from(studentIds);
 
-  // 3. Fetch user details from Clerk
   let clerkUsers: any[] = [];
   if (uniqueStudentIds.length > 0) {
     try {
@@ -50,7 +47,6 @@ export default async function StudentsPage() {
     }
   }
 
-  // 4. Map user details to their progress in respective courses
   const students = await Promise.all(
     uniqueStudentIds.map(async (studentId) => {
       const clerkUser = clerkUsers.find((u) => u.id === studentId);
@@ -62,7 +58,6 @@ export default async function StudentsPage() {
         : "Unknown User";
       const imageUrl = clerkUser?.imageUrl || "";
 
-      // Find which courses this student is enrolled in (from the teacher's courses)
       const enrolledCourses = courses.filter((c) =>
         c.purchases.some((p) => p.userId === studentId),
       );

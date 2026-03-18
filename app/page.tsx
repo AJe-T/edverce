@@ -78,7 +78,6 @@ import {
   SiVercel,
 } from "react-icons/si";
 
-// --- Reusable Framer Motion Components ---
 const FadeIn = ({
   children,
   delay = 0,
@@ -162,7 +161,6 @@ export default function App() {
   const { userId } = useAuth();
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
-  // --- 3D Hover Effect Logic for Hero ---
   const heroX = useMotionValue(0);
   const heroY = useMotionValue(0);
   const mouseXSpring = useSpring(heroX, { stiffness: 150, damping: 15 });
@@ -189,7 +187,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#060B14] text-slate-300 font-sans overflow-hidden selection:bg-blue-500/30">
-      {/* Global CSS for utilities */}
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -215,9 +212,7 @@ export default function App() {
 
       <MarketingHeader />
 
-      {/* --- Hero Section --- */}
       <section className="relative pt-40 pb-20 lg:pt-48 lg:pb-32 overflow-hidden px-6">
-        {/* Animated Background Blobs */}
         <motion.div
           animate={{
             x: [0, 30, -20, 0],
@@ -243,7 +238,6 @@ export default function App() {
         />
 
         <div className="max-w-7xl mx-auto relative z-10 grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
           <div className="space-y-8">
             <FadeIn delay={0.1}>
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-semibold tracking-wide uppercase">
@@ -321,7 +315,6 @@ export default function App() {
             </FadeIn>
           </div>
 
-          {/* Right Visual (Framer Motion 3D Tilt Card) */}
           <div className="relative lg:h-[600px] flex items-center justify-center hidden lg:flex perspective-[1000px]">
             <motion.div
               onMouseMove={handleHeroMouseMove}
@@ -329,7 +322,6 @@ export default function App() {
               style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
               className="relative w-[500px] h-[350px] rounded-2xl glass-panel border border-white/10 shadow-2xl z-10 p-6 flex flex-col"
             >
-              {/* Floating Elements */}
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{
@@ -351,7 +343,6 @@ export default function App() {
                 </div>
               </motion.div>
 
-              {/* Mockup UI inside card */}
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
                 <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
@@ -385,7 +376,6 @@ export default function App() {
               </div>
             </motion.div>
 
-            {/* Decorative rings behind */}
             <div className="absolute inset-0 flex items-center justify-center z-0">
               <div className="w-[500px] h-[500px] border border-white/5 rounded-full"></div>
               <motion.div
@@ -398,7 +388,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- Marquee: Trusted By --- */}
       <section className="py-20 border-y border-white/5 bg-slate-900/20 overflow-hidden flex flex-col items-center mt-12 mb-12">
         <p className="text-sm font-semibold text-slate-500 mb-10 tracking-widest uppercase">
           Master Modern Technologies
@@ -454,7 +443,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- Flagship Programs --- */}
       <section id="courses" className="py-32 px-6 max-w-7xl mx-auto">
         <FadeIn className="text-center mb-20">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
@@ -467,7 +455,6 @@ export default function App() {
         </FadeIn>
 
         <div className="space-y-12">
-          {/* Large Feature Card 1 */}
           <FadeIn direction="left">
             <div className="group glass-panel rounded-3xl p-2 md:p-8 flex flex-col md:flex-row items-center gap-8 md:gap-16 border border-white/5 hover:border-blue-500/30 transition-colors relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-600/0 to-blue-600/0 group-hover:from-blue-600/5 group-hover:to-transparent transition-all duration-500"></div>
@@ -611,12 +598,9 @@ export default function App() {
             </div>
           </FadeIn>
 
-          {/* Large Feature Card 2 */}
           <FadeIn direction="right">
             <div className="group glass-panel rounded-3xl p-2 md:p-8 flex flex-col-reverse md:flex-row items-center gap-8 md:gap-16 border border-white/5 hover:border-indigo-500/30 transition-colors relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-l from-indigo-600/0 via-indigo-600/0 to-indigo-600/0 group-hover:from-indigo-600/5 group-hover:to-transparent transition-all duration-500"></div>
-
-              {/* OVERLAY FOR BLURRING WHOLE CARD */}
               <div className="absolute inset-0 z-50 backdrop-blur-xl bg-slate-950/70 flex flex-col items-center justify-center pointer-events-none rounded-3xl">
                 <div className="bg-black/90 px-8 py-4 rounded-full border border-indigo-500/50 text-indigo-400 text-xl font-bold tracking-widest flex items-center gap-3 shadow-[0_0_40px_rgba(99,102,241,0.6)] pointer-events-auto">
                   <Sparkles className="w-5 h-5" /> COMING SOON
@@ -764,7 +748,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- NEW SECTION: Tech Stack Bento Grid --- */}
       <section
         id="tools"
         className="py-24 px-6 bg-[#03060C] border-y border-white/5"
@@ -780,7 +763,6 @@ export default function App() {
           </FadeIn>
 
           <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-6 h-auto md:h-[500px]">
-            {/* Bento Box 1: Frontend */}
             <FadeIn
               direction="up"
               delay={0.1}
@@ -798,7 +780,6 @@ export default function App() {
               </p>
             </FadeIn>
 
-            {/* Bento Box 2: Backend */}
             <FadeIn
               direction="up"
               delay={0.2}
@@ -823,7 +804,6 @@ export default function App() {
               </div>
             </FadeIn>
 
-            {/* Bento Box 3: Databases */}
             <FadeIn
               direction="up"
               delay={0.3}
@@ -838,7 +818,6 @@ export default function App() {
               </p>
             </FadeIn>
 
-            {/* Bento Box 4: DevOps */}
             <FadeIn
               direction="up"
               delay={0.4}
@@ -858,7 +837,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- Vertical Timeline --- */}
       <section className="py-24 relative overflow-hidden bg-[#0A0F1C] border-y border-white/5">
         <div className="max-w-4xl mx-auto px-6 relative z-10">
           <FadeIn className="text-center mb-16">
@@ -873,7 +851,6 @@ export default function App() {
           <div className="relative">
             <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-1 timeline-line transform md:-translate-x-1/2 rounded-full hidden sm:block"></div>
 
-            {/* Step 1 */}
             <FadeIn className="relative flex flex-col md:flex-row items-start justify-between mb-16 md:mb-24 group">
               <div className="md:w-[45%] text-left md:text-right order-2 md:order-1 pl-12 md:pl-0 mt-4 md:mt-0">
                 <h3 className="text-2xl font-bold text-white mb-2">
@@ -901,7 +878,6 @@ export default function App() {
               </div>
             </FadeIn>
 
-            {/* Step 2 */}
             <FadeIn className="relative flex flex-col md:flex-row items-start justify-between mb-16 md:mb-24 group">
               <div className="md:w-[45%] order-1 pl-12 md:pl-0 hidden md:flex justify-end">
                 <div className="glass-panel p-4 rounded-xl border border-white/10 w-full max-w-xs opacity-50 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
@@ -924,7 +900,6 @@ export default function App() {
               </div>
             </FadeIn>
 
-            {/* Step 3 */}
             <FadeIn className="relative flex flex-col md:flex-row items-start justify-between group">
               <div className="md:w-[45%] text-left md:text-right order-2 md:order-1 pl-12 md:pl-0 mt-4 md:mt-0">
                 <h3 className="text-2xl font-bold text-white mb-2">
@@ -956,13 +931,10 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- NEW SECTION: Integrated Code Playground Showcase --- */}
       <section className="py-24 px-6 max-w-7xl mx-auto relative overflow-hidden">
-        {/* Glows */}
         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none" />
 
         <div className="grid lg:grid-cols-2 gap-12 items-center reveal-on-scroll opacity-100 translate-y-0">
-          {/* Left: Text */}
           <div className="space-y-6 order-2 lg:order-1">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-semibold tracking-wide uppercase">
               <Terminal className="w-4 h-4" /> Built-in IDE
@@ -999,7 +971,6 @@ export default function App() {
             </Link>
           </div>
 
-          {/* Right: Editor Mockup */}
           <div className="relative rounded-2xl glass-panel border border-white/10 p-2 shadow-2xl order-1 lg:order-2">
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#0A0F1C] rounded-t-xl">
               <div className="flex items-center gap-2">
@@ -1055,7 +1026,6 @@ export default function App() {
                 {"}"}
               </pre>
 
-              {/* Floating Browser Preview inside IDE Mockup */}
               <div className="absolute bottom-4 right-4 left-12 bg-[#060B14] border border-white/10 rounded-lg p-4 shadow-xl transform translate-y-2 hover:translate-y-0 transition-transform">
                 <div className="text-xs text-slate-500 mb-2 font-sans border-b border-white/5 pb-2">
                   Preview Output
@@ -1071,9 +1041,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- NEW SECTION: Community & Impact --- */}
       <section id="community" className="py-24 px-6 relative overflow-hidden">
-        {/* Floating animated background elements */}
         {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
@@ -1140,7 +1108,6 @@ export default function App() {
               direction="right"
               className="relative h-[400px] flex items-center justify-center"
             >
-              {/* Abstract representation of a community network */}
               <div className="relative w-full max-w-sm aspect-square border border-white/10 rounded-full flex items-center justify-center">
                 <div className="w-3/4 h-3/4 border border-white/5 rounded-full flex items-center justify-center">
                   <div className="w-1/2 h-1/2 border border-blue-500/20 bg-blue-500/5 rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(37,99,235,0.2)]">
@@ -1148,7 +1115,6 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Orbiting user avatars */}
                 {[
                   { icon: <FaReact className="w-8 h-8 text-cyan-400" /> },
                   { icon: <SiMongodb className="w-8 h-8 text-green-500" /> },
@@ -1192,7 +1158,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- Wall of Love (Infinite Scroll Testimonials) --- */}
       <section
         id="testimonials"
         className="py-24 overflow-hidden bg-slate-900/20 border-y border-white/5 flex flex-col items-center"
@@ -1207,11 +1172,9 @@ export default function App() {
         </div>
 
         <div className="w-full relative flex flex-col gap-6 overflow-x-hidden rotate-[-1deg] scale-105">
-          {/* Fading edges */}
           <div className="absolute top-0 bottom-0 left-0 w-32 bg-gradient-to-r from-[#060B14] to-transparent z-10 pointer-events-none"></div>
           <div className="absolute top-0 bottom-0 right-0 w-32 bg-gradient-to-l from-[#060B14] to-transparent z-10 pointer-events-none"></div>
 
-          {/* Row 1 (Scrolls Left) */}
           <div className="flex animate-scroll gap-6 px-4">
             {scrollingRow1.map((item, i) => (
               <div
@@ -1243,7 +1206,6 @@ export default function App() {
             ))}
           </div>
 
-          {/* Row 2 (Scrolls Right) */}
           <div className="flex animate-scroll-reverse gap-6 px-4">
             {scrollingRow2.map((item, i) => (
               <div
@@ -1277,7 +1239,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- FAQ Section (Smooth Accordion) --- */}
       <section
         id="faq"
         className="py-24 px-6 max-w-3xl mx-auto border-t border-white/5"
@@ -1349,7 +1310,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- CTA Section --- */}
       <section className="py-24 px-6 border-t border-white/5 relative overflow-hidden bg-gradient-to-b from-transparent to-blue-950/20">
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">

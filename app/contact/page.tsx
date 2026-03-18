@@ -73,11 +73,9 @@ export default function Contact() {
       <MarketingHeader />
 
       <div className="animate-fade-in pt-40 pb-20 lg:pt-48 lg:pb-32 px-6 relative">
-        {/* Background Glowing Blobs */}
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full transform-gpu filter blur-[120px] pointer-events-none" />
         <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full transform-gpu filter blur-[120px] pointer-events-none" />
 
-        {/* --- Contact Hero & Form Section --- */}
         <section className="max-w-7xl mx-auto mb-32">
           <div
             className="mb-16 reveal-on-scroll opacity-0 translate-y-10"
@@ -93,13 +91,11 @@ export default function Contact() {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12">
-            {/* Left: Contact Information Cards */}
             <div
               className="space-y-6 reveal-on-scroll opacity-0 translate-y-10 delay-100"
               style={{ animation: "fade-in 1s ease-out 0.1s forwards" }}
             >
               <div className="glass-panel p-8 rounded-3xl border border-white/5 space-y-8 relative overflow-hidden group">
-                {/* Subtle hover glow */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-blue-500/0 group-hover:from-blue-500/5 group-hover:to-transparent transition-all duration-500 pointer-events-none"></div>
 
                 <div className="flex items-start gap-4">
@@ -143,7 +139,6 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* Support Window Highlight Box */}
               <div className="glass-panel p-6 rounded-3xl border border-blue-500/20 bg-blue-900/10 flex items-start gap-4 relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full filter blur-[40px] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 shrink-0 mt-1 relative z-10">
@@ -161,7 +156,6 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Right: Contact Form */}
             <div
               className="glass-panel p-8 md:p-10 rounded-3xl border border-white/5 reveal-on-scroll opacity-0 translate-y-10 delay-200"
               style={{ animation: "fade-in 1s ease-out 0.2s forwards" }}
@@ -229,7 +223,6 @@ export default function Contact() {
           </div>
         </section>
 
-        {/* --- How We Work With Teams (Upgraded to Glassmorphism Grid) --- */}
         <section className="max-w-7xl mx-auto mb-20">
           <h2
             className="text-3xl font-bold text-white mb-8 reveal-on-scroll opacity-0 translate-y-10"
@@ -301,7 +294,6 @@ export default function Contact() {
           </div>
         </section>
 
-        {/* --- Common Questions (Accordion) --- */}
         <section className="max-w-3xl mx-auto pb-12">
           <div
             className="text-center mb-16 reveal-on-scroll opacity-0 translate-y-10"

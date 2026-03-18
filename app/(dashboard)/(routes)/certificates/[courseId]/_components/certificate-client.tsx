@@ -30,14 +30,13 @@ export const CertificateClient = ({
     try {
       setIsDownloading(true);
 
-      // Temporarily stash old styles to ensure high-quality render
       const originalBorder = certificateElement.style.border;
       certificateElement.style.border = "none";
 
       const canvas = await html2canvas(certificateElement, {
-        scale: 3, // very high resolution
+        scale: 3, 
         useCORS: true,
-        backgroundColor: "#0A0F1C", // Match dark theme specifically
+        backgroundColor: "#0A0F1C", 
         logging: false,
       });
 
@@ -45,7 +44,6 @@ export const CertificateClient = ({
 
       const imgData = canvas.toDataURL("image/png");
 
-      // We'll use landscape A4 size
       const pdf = new jsPDF({
         orientation: "landscape",
         unit: "mm",
@@ -55,7 +53,6 @@ export const CertificateClient = ({
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-      // Center it strictly vertical if height is smaller
       const yPos = (pdf.internal.pageSize.getHeight() - pdfHeight) / 2;
 
       pdf.addImage(imgData, "PNG", 0, Math.max(0, yPos), pdfWidth, pdfHeight);
@@ -95,7 +92,6 @@ export const CertificateClient = ({
       `,
         }}
       />
-      {/* Action Bar (Hidden in print) */}
       <div className="w-full max-w-5xl flex flex-col sm:flex-row items-center justify-between mb-8 print-hidden bg-white/50 dark:bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-white/5 shadow-md relative z-20">
         <div className="text-slate-600 dark:text-slate-300 font-medium mb-4 sm:mb-0">
           Certificate ID:{" "}
@@ -115,31 +111,23 @@ export const CertificateClient = ({
         </div>
       </div>
 
-      {/* Mobile Wrapper to preserve strict 1024px size */}
       <div className="w-full max-w-[1024px] overflow-x-auto pb-8 -mx-6 px-6 sm:mx-0 sm:px-0">
         <div className="min-w-[900px] w-[1024px] max-w-full origin-top-left sm:origin-top transform sm:scale-100">
-          {/* The Printable Certificate Container */}
           <div
             ref={certificateRef}
             className="w-full aspect-[1.414/1] bg-[#0A0F1C] relative border border-slate-800 p-6 rounded-sm shadow-2xl certificate-print-container overflow-hidden"
           >
-            {/* Certificate Inner Border & Background styling */}
             <div className="w-full h-full border-2 border-blue-500/20 bg-[#060B14] relative p-16 flex flex-col items-center justify-center text-center">
-              {/* Decorative Corner Accents */}
               <div className="absolute top-4 left-4 w-16 h-16 border-t-2 border-l-2 border-blue-500/50"></div>
               <div className="absolute top-4 right-4 w-16 h-16 border-t-2 border-r-2 border-blue-500/50"></div>
               <div className="absolute bottom-4 left-4 w-16 h-16 border-b-2 border-l-2 border-blue-500/50"></div>
               <div className="absolute bottom-4 right-4 w-16 h-16 border-b-2 border-r-2 border-blue-500/50"></div>
 
-              {/* Subtle Grid / Watermark Background */}
               <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiLz48L3N2Zz4=')] opacity-50 pointer-events-none"></div>
 
-              {/* Glowing Background Blob inside cert */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/5 rounded-full filter blur-[100px] pointer-events-none transform-gpu"></div>
 
-              {/* Certificate Content */}
               <div className="relative z-10 w-full flex flex-col items-center">
-                {/* Header / Logo Logo */}
                 <div className="flex items-center justify-center mb-12">
                   <img
                     src="/Logo.png"
@@ -170,9 +158,7 @@ export const CertificateClient = ({
                   {certData.courseName}
                 </h2>
 
-                {/* Bottom Section: Signatures & Seal */}
                 <div className="w-full flex flex-row items-end justify-between px-16 mt-auto">
-                  {/* Date */}
                   <div className="flex flex-col items-center mb-0">
                     <span className="text-white font-medium text-lg border-b border-white/20 pb-2 mb-2 px-8">
                       {certData.issueDate}
@@ -182,7 +168,6 @@ export const CertificateClient = ({
                     </span>
                   </div>
 
-                  {/* Seal/Badge */}
                   <div className="relative flex items-center justify-center mb-0 mx-8">
                     <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-[20px] transform-gpu"></div>
                     <div className="w-24 h-24 rounded-full border-2 border-blue-500/50 bg-[#0A0F1C] flex items-center justify-center relative z-10 shadow-[0_0_30px_rgba(37,99,235,0.3)]">
@@ -190,9 +175,7 @@ export const CertificateClient = ({
                     </div>
                   </div>
 
-                  {/* Signature */}
                   <div className="flex flex-col items-center">
-                    {/* Simulated Signature Font */}
                     <span
                       style={{
                         fontFamily: "'Brush Script MT', cursive, serif",

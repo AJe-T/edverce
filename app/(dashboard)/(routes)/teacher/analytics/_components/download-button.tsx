@@ -10,19 +10,16 @@ interface DownloadButtonProps {
 
 export const DownloadButton = ({ data, dailyData }: DownloadButtonProps) => {
   const downloadCSV = () => {
-    // 1. Generate Course Performance CSV
     let courseCsv = "Course Title,Total Revenue,Total Sales\n";
     courseCsv += data
       .map((d) => `"${d.name}",${d.total},${d.sales}`)
       .join("\n");
 
-    // 2. Generate Daily Revenue CSV
     let dailyCsv = "\n\nDate,Revenue\n";
     dailyCsv += dailyData.map((d) => `"${d.name}",${d.total}`).join("\n");
 
     const fullCsv = courseCsv + dailyCsv;
 
-    // Create Blob and trigger download
     const blob = new Blob([fullCsv], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);

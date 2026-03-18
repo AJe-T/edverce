@@ -70,7 +70,6 @@ export const TopBannerClient = ({ setting }: { setting: any }) => {
           <span className="mx-10">{setting.popupTitle}</span>
         </div>
 
-        {/* Semi-transparent fade block to ensure close button is visible over text */}
         <div className="absolute right-0 top-0 bottom-0 bg-gradient-to-l from-slate-900 w-16 pointer-events-none" />
 
         <button

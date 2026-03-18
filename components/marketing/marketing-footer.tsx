@@ -63,14 +63,6 @@ export const MarketingFooter = () => {
                 About
               </Link>
             </li>
-            {/* <li>
-              <Link
-                href="/features"
-                className="hover:text-blue-400 transition-colors"
-              >
-                Features
-              </Link>
-            </li> */}
             <li>
               <Link
                 href="/contact"

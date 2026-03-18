@@ -37,20 +37,13 @@ const ActionCell = ({ coupon }: { coupon: CouponWithCategory }) => {
     }
   };
 
-  // NOTE: Categories for the edit modal are realistically fetched or passed from datatable.
-  // Wait, columns.tsx doesn't have access to categories easily unless we pass it via meta or globally, or fetch it.
-  // A simple hack: fetch it here or don't let them edit category if that's complex, OR use React Query.
-  // Actually, wait, let's fetch categories in the Modal if needed, or pass it from DataTable.
-  // Let me just fetch it here or pass it inside CouponModal using a separate API route?
-  // Let's just create a quick API fetch for categories inside CouponModal since we already passed it an array.
-
   return (
     <>
       <CouponModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         initialData={coupon}
-        categories={[]} // We will handle categories properly by passing them via table.options.meta, but for now passing empty. Wait! I will fetch them in modal if empty or just inject from meta.
+        categories={[]}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

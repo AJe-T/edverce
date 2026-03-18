@@ -48,7 +48,6 @@ export const getAnalytics = async (userId: string) => {
       groupedEarnings[courseTitle].total += price;
       groupedEarnings[courseTitle].sales += 1;
 
-      // Group by daily earnings
       const dateKey = purchase.createdAt.toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",

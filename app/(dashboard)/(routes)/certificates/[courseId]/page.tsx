@@ -41,7 +41,6 @@ const CertificatePage = async ({
     user.emailAddresses[0]?.emailAddress ||
     "Student";
 
-  // If a teacher wants to view their student's certificate, securely switch context
   if (searchParams?.studentId && course.userId === userId) {
     targetUserId = searchParams.studentId;
     try {
@@ -57,12 +56,10 @@ const CertificatePage = async ({
 
   const progressCount = await getProgress(targetUserId, course.id);
 
-  // Users must have 100% progress to view the certificate
   if (progressCount !== 100) {
     return redirect("/certificates");
   }
 
-  // Create a predictable but unique looking certificate ID using course and user ID chunks
   const certIdChunk1 = course.id.substring(0, 4).toUpperCase();
   const certIdChunk2 = targetUserId
     .substring(targetUserId.length - 4)
@@ -70,7 +67,6 @@ const CertificatePage = async ({
   const certIdChunk3 = "LMS1";
   const certificateId = `${certIdChunk1}-${certIdChunk2}-${certIdChunk3}`;
 
-  // Fetch actual instructor from Clerk using clerkClient
   let instructorName = "Course Instructor";
   try {
     const instructorUser = await clerkClient.users.getUser(course.userId);

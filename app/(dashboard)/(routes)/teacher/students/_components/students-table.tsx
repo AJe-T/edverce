@@ -33,14 +33,12 @@ export const StudentsTable = ({ students }: StudentTableProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // Filter students by email OR name
   const filteredStudents = students.filter(
     (s) =>
       s.email.toLowerCase().includes(search.toLowerCase()) ||
       s.name.toLowerCase().includes(search.toLowerCase()),
   );
 
-  // Pagination bounds
   const totalPages = Math.ceil(filteredStudents.length / itemsPerPage) || 1;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -48,7 +46,6 @@ export const StudentsTable = ({ students }: StudentTableProps) => {
 
   return (
     <div className="space-y-4">
-      {/* Search Bar */}
       <div className="flex items-center">
         <div className="relative w-full max-w-sm">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -58,13 +55,12 @@ export const StudentsTable = ({ students }: StudentTableProps) => {
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
-              setCurrentPage(1); // Reset to first page when searching
+              setCurrentPage(1); 
             }}
           />
         </div>
       </div>
 
-      {/* Main Table Container */}
       <div className="bg-white dark:bg-slate-900 border rounded-xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
@@ -161,7 +157,6 @@ export const StudentsTable = ({ students }: StudentTableProps) => {
                               </div>
                             )}
 
-                            {/* Progress Bar inside cell */}
                             <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mt-1 relative overflow-hidden">
                               <div
                                 className={`h-1.5 rounded-full ${
@@ -215,7 +210,6 @@ export const StudentsTable = ({ students }: StudentTableProps) => {
         </div>
       </div>
 
-      {/* Pagination Footer */}
       <div className="flex items-center justify-between pt-2">
         <div className="text-sm text-muted-foreground">
           Showing{" "}

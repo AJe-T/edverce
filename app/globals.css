@@ -10,34 +10,33 @@ body,
 
 @layer base {
   :root {
-    /* Edverce Custom Light Theme provided by user */
-    --background: 0 11% 97%; /* #F9F7F7 */
-    --foreground: 212 64% 19%; /* #112D4E */
+    --background: 0 11% 97%;
+    --foreground: 212 64% 19%;
 
-    --card: 0 11% 97%; /* #F9F7F7 */
-    --card-foreground: 212 64% 19%; /* #112D4E */
+    --card: 0 11% 97%;
+    --card-foreground: 212 64% 19%;
 
-    --popover: 0 11% 97%; /* #F9F7F7 */
-    --popover-foreground: 212 64% 19%; /* #112D4E */
+    --popover: 0 11% 97%;
+    --popover-foreground: 212 64% 19%;
 
-    --primary: 213 47% 47%; /* #3F72AF */
-    --primary-foreground: 0 11% 97%; /* #F9F7F7 */
+    --primary: 213 47% 47%;
+    --primary-foreground: 0 11% 97%;
 
-    --secondary: 219 42% 90%; /* #DBE2EF */
-    --secondary-foreground: 212 64% 19%; /* #112D4E */
+    --secondary: 219 42% 90%;
+    --secondary-foreground: 212 64% 19%;
 
-    --muted: 219 42% 90%; /* #DBE2EF */
-    --muted-foreground: 212 28% 40%; /* slightly lighter text */
+    --muted: 219 42% 90%;
+    --muted-foreground: 212 28% 40%;
 
-    --accent: 219 42% 90%; /* #DBE2EF */
-    --accent-foreground: 212 64% 19%; /* #112D4E */
+    --accent: 219 42% 90%;
+    --accent-foreground: 212 64% 19%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 11% 97%; /* #F9F7F7 */
+    --destructive-foreground: 0 11% 97%;
 
-    --border: 219 42% 85%; /* Lighter #DBE2EF for borders */
-    --input: 219 42% 90%; /* #DBE2EF */
-    --ring: 213 47% 47%; /* #3F72AF */
+    --border: 219 42% 85%;
+    --input: 219 42% 90%;
+    --ring: 213 47% 47%;
 
     --radius: 0.5rem;
   }
@@ -149,7 +148,7 @@ body,
     hsl(var(--secondary) / 0.08) 35%,
     hsl(var(--background)) 70%
   );
-  background-attachment: scroll; /* Fixed is often terribly slow on mobile, scroll is smoother */
+  background-attachment: scroll;
 }
 
 @keyframes float-soft {

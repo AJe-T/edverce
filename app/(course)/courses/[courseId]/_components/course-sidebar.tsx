@@ -58,7 +58,7 @@ export const CourseSidebar = async ({
     }
   >();
 
-  let isPreviousCompleted = true; // The first lesson is always unlocked regardless of previous completion mode
+  let isPreviousCompleted = true;
 
   for (const chapter of course.chapters) {
     const { section, lessonTitle } = getChapterSectionAndTitle(chapter.title);

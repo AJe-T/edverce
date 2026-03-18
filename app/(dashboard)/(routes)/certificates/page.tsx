@@ -44,7 +44,6 @@ export default async function CertificatesPage() {
             >
               <div className="mb-4">
                 <div className="h-32 w-full bg-slate-100 dark:bg-slate-800 rounded-xl relative overflow-hidden flex items-center justify-center border border-white/10">
-                  {/* Decorative certificate background */}
                   <div className="absolute inset-0 bg-blue-500/5 mix-blend-overlay"></div>
                   <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 rounded-bl-full"></div>
                   <div className="absolute bottom-0 left-0 w-16 h-16 bg-purple-500/10 rounded-tr-full"></div>

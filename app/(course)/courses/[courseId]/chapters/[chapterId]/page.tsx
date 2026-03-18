@@ -50,9 +50,7 @@ const ChapterIdPage = async ({
         />
       )}
       <div className="flex flex-col mx-auto pb-20">
-        {/* Contained theater backdrop for video with Ambient Mode Glow */}
         <div className="w-full flex justify-center bg-slate-50 dark:bg-slate-950/30 p-4 sm:p-6 lg:p-8 z-10 border-b border-border shadow-inner relative overflow-hidden">
-          {/* Ambient Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl aspect-video bg-blue-500/20 dark:bg-blue-500/30 blur-[100px] rounded-full pointer-events-none animate-pulse duration-1000" />
 
           <div className="w-full max-w-5xl aspect-video relative rounded-3xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] border border-slate-200 dark:border-slate-800 bg-black z-10">
@@ -68,7 +66,6 @@ const ChapterIdPage = async ({
           </div>
         </div>
 
-        {/* Content Layout */}
         <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 flex flex-col gap-y-8">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-y-4">
             <div className="flex flex-col gap-1">
@@ -99,7 +96,6 @@ const ChapterIdPage = async ({
           <Separator className="bg-border/50" />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Column: Description */}
             <div className="lg:col-span-2 space-y-6">
               <div className="bg-white dark:bg-slate-900 rounded-2xl border border-border/50 shadow-sm p-6 overflow-hidden">
                 <h3 className="text-xl font-bold mb-4 text-slate-900 dark:text-white">
@@ -109,7 +105,6 @@ const ChapterIdPage = async ({
               </div>
             </div>
 
-            {/* Right Column: Widgets */}
             <div className="space-y-6">
               {!!attachments.length && (
                 <div className="bg-white dark:bg-slate-900 rounded-2xl border border-border/50 shadow-sm p-6">

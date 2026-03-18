@@ -6,9 +6,7 @@ export default function TermsPage() {
     <div className="min-h-screen bg-[#03060C] font-sans selection:bg-blue-500/30 text-slate-300">
       <MarketingHeader />
 
-      {/* Hero Section */}
       <div className="relative pt-20 pb-16 border-b border-white/5 overflow-hidden">
-        {/* Decorative blur elements behind the hero to match the marketing theme */}
         <div className="absolute top-0 left-1/2 w-[800px] h-[300px] bg-blue-600/10 rounded-full transform -translate-x-1/2 -translate-y-1/2 filter blur-[100px] pointer-events-none" />
 
         <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
