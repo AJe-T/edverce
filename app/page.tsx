@@ -1,5 +1,4 @@
 "use client";
-import { SignInButton, SignOutButton, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -13,41 +12,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   Play,
-  ChevronRight,
   Star,
-  Code,
   Layout,
   Users,
-  Zap,
   CheckCircle,
   ChevronDown,
-  MonitorPlay,
   Award,
   ArrowRight,
-  Github,
-  Twitter,
-  Linkedin,
-  BookOpen,
-  Map,
-  Lightbulb,
-  Rocket,
-  ShieldCheck,
-  Mail,
-  Phone,
-  MapPin,
-  Clock,
   MessageSquare,
-  CalendarRange,
-  Search,
-  User,
-  Lock,
-  ArrowLeft,
-  Download,
-  Share2,
-  Medal,
   Terminal,
   Cloud,
   Database,
@@ -62,21 +37,6 @@ import {
   useTransform,
   AnimatePresence,
 } from "framer-motion";
-import { FaReact, FaHtml5, FaNodeJs, FaGithub } from "react-icons/fa";
-import {
-  SiMongodb,
-  SiJavascript,
-  SiTypescript,
-  SiCss3,
-  SiTailwindcss,
-  SiDotenv,
-  SiNodedotjs,
-  SiGithub,
-  SiReact,
-  SiExpress,
-  SiPostman,
-  SiVercel,
-} from "react-icons/si";
 
 const FadeIn = ({
   children,
@@ -157,10 +117,83 @@ const reviewsRow2 = [
 const scrollingRow1 = [...reviewsRow1, ...reviewsRow1, ...reviewsRow1];
 const scrollingRow2 = [...reviewsRow2, ...reviewsRow2, ...reviewsRow2];
 
-export default function App() {
-  const { userId } = useAuth();
+const FaqSection = () => {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const faqData = [
+    {
+      q: "Is this platform beginner friendly?",
+      a: "Yes. Our courses are structured from fundamental concepts to advanced modules with clear, step-by-step progression.",
+    },
+    {
+      q: "Are the classes live or recorded?",
+      a: "We offer a hybrid model. The core concepts are high-quality recorded videos so you can learn at your own pace, paired with weekly live doubt-clearing sessions.",
+    },
+    {
+      q: "Do you provide a certificate?",
+      a: "Yes, upon successfully completing all modules and final projects, you receive a verified certificate that you can add to your LinkedIn profile.",
+    },
+    {
+      q: "Can teams use it for internal training?",
+      a: "Absolutely. We have specialized plans for startups and enterprises with team dashboards to track progress.",
+    },
+  ];
 
+  return (
+    <section
+      id="faq"
+      className="py-24 px-6 max-w-3xl mx-auto border-t border-white/5"
+    >
+      <FadeIn className="text-center mb-16">
+        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+          Got Questions?
+        </h2>
+        <p className="text-slate-400 text-lg">
+          Everything you need to know about the platform.
+        </p>
+      </FadeIn>
+
+      <div className="space-y-4">
+        {faqData.map((faq, i) => (
+          <FadeIn delay={i * 0.1} key={i}>
+            <div
+              className={`glass-panel border rounded-2xl overflow-hidden transition-colors duration-300 ${activeFaq === i ? "border-blue-500/50 bg-blue-900/10" : "border-white/5 hover:border-white/20"}`}
+            >
+              <button
+                onClick={() => setActiveFaq(activeFaq === i ? null : i)}
+                className="w-full text-left px-6 py-5 flex items-center justify-between focus:outline-none"
+              >
+                <span className="text-white font-medium text-lg">{faq.q}</span>
+                <motion.div
+                  animate={{ rotate: activeFaq === i ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ChevronDown
+                    className={`w-5 h-5 ${activeFaq === i ? "text-blue-400" : "text-slate-400"}`}
+                  />
+                </motion.div>
+              </button>
+              <AnimatePresence>
+                {activeFaq === i && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="px-6 text-slate-400 overflow-hidden"
+                  >
+                    <div className="pb-5">{faq.a}</div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default function App() {
   const heroX = useMotionValue(0);
   const heroY = useMotionValue(0);
   const mouseXSpring = useSpring(heroX, { stiffness: 150, damping: 15 });
@@ -191,11 +224,11 @@ export default function App() {
         dangerouslySetInnerHTML={{
           __html: `
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-scroll { animation: scroll 40s linear infinite; width: max-content; }
+        .animate-scroll { animation: scroll 40s linear infinite; width: max-content; will-change: transform; transform: translateZ(0); }
         .animate-scroll:hover { animation-play-state: paused; }
         
         @keyframes scroll-reverse { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-        .animate-scroll-reverse { animation: scroll-reverse 40s linear infinite; width: max-content; }
+        .animate-scroll-reverse { animation: scroll-reverse 40s linear infinite; width: max-content; will-change: transform; transform: translateZ(0); }
         .animate-scroll-reverse:hover { animation-play-state: paused; }
 
         .glass-panel {
@@ -362,9 +395,11 @@ export default function App() {
 
                 <div className="absolute bottom-4 right-4 w-40 h-24 bg-slate-800 rounded-lg border border-white/10 overflow-hidden group">
                   <Image
-                    src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400&auto=format&fit=crop&q=60"
+                    src="/hero-section-1.avif"
                     alt="Code"
                     fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover opacity-50 group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -403,39 +438,61 @@ export default function App() {
                 className="flex gap-24 items-center pr-24 shrink-0"
               >
                 <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3">
-                  <FaHtml5 className="text-orange-500 w-14 h-14" /> HTML5
+                  <Image src="/html5.svg" width={56} height={56} alt="HTML5" />{" "}
+                  HTML5
                 </div>
                 <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3">
-                  <SiCss3 className="text-blue-500 w-14 h-14" /> CSS3
+                  <Image src="/css.svg" width={56} height={56} alt="CSS3" />{" "}
+                  CSS3
                 </div>
                 <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3 text-center">
-                  <SiJavascript className="text-yellow-400 w-14 h-14" />
+                  <Image
+                    src="/javascript.svg"
+                    width={56}
+                    height={56}
+                    alt="JavaScript"
+                  />
                   JavaScript
                 </div>
                 <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3 text-center">
-                  <SiMongodb className="text-green-500 w-14 h-14" />
+                  <Image
+                    src="/mongodb.svg"
+                    width={56}
+                    height={56}
+                    alt="MongoDB"
+                  />
                   MongoDB
                 </div>
                 <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3 text-center">
-                  <SiTypescript className="text-blue-500 w-14 h-14" />
+                  <Image
+                    src="/typescript.svg"
+                    width={56}
+                    height={56}
+                    alt="TypeScript"
+                  />
                   TypeScript
                 </div>
                 <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3 text-center">
-                  <SiNodedotjs className="text-green-500 w-14 h-14" />
+                  <Image
+                    src="/nodedotjs.svg"
+                    width={56}
+                    height={56}
+                    alt="Node.js"
+                  />
                   Node.js
                 </div>
                 <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3">
-                  <FaReact className="text-cyan-400 w-14 h-14" /> React
-                </div>
-                <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3">
-                  <SiExpress className="text-cyan-400 w-14 h-14" /> Express
+                  <Image src="/react.svg" width={56} height={56} alt="React" />{" "}
+                  React
                 </div>
                 <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3 text-center">
-                  <SiTailwindcss className="text-teal-400 w-14 h-14" /> Tailwind
-                  CSS
-                </div>
-                <div className="text-xl font-bold text-slate-300 flex flex-col items-center gap-3">
-                  <FaNodeJs className="text-green-500 w-14 h-14" /> Node.js
+                  <Image
+                    src="/tailwindcss.svg"
+                    width={56}
+                    height={56}
+                    alt="Tailwind CSS"
+                  />{" "}
+                  Tailwind CSS
                 </div>
               </div>
             ))}
@@ -461,9 +518,10 @@ export default function App() {
 
               <div className="w-full md:w-5/12 aspect-video md:aspect-square bg-slate-900 rounded-2xl overflow-hidden relative border border-white/10">
                 <Image
-                  src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=60"
+                  src="/home-page-img-2.avif"
                   alt="Web Dev"
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 flex items-center gap-2 text-xs font-bold text-white">
@@ -734,9 +792,10 @@ export default function App() {
 
               <div className="w-full md:w-5/12 aspect-video md:aspect-square bg-slate-900 rounded-2xl overflow-hidden relative border border-white/10">
                 <Image
-                  src="https://images.unsplash.com/photo-1526379095098-d400fd0bfce8?w=800&auto=format&fit=crop&q=60"
+                  src="/home-page-img-2.avif"
                   alt="DSA"
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 flex items-center gap-2 text-xs font-bold text-white">
@@ -1116,14 +1175,67 @@ export default function App() {
                 </div>
 
                 {[
-                  { icon: <FaReact className="w-8 h-8 text-cyan-400" /> },
-                  { icon: <SiMongodb className="w-8 h-8 text-green-500" /> },
                   {
-                    icon: <SiJavascript className="w-8 h-8 text-yellow-400" />,
+                    icon: (
+                      <Image
+                        src="/react.svg"
+                        width={32}
+                        height={32}
+                        alt="React"
+                      />
+                    ),
                   },
-                  { icon: <SiTypescript className="w-8 h-8 text-blue-500" /> },
-                  { icon: <FaHtml5 className="w-8 h-8 text-orange-500" /> },
-                  { icon: <FaGithub className="w-8 h-8 text-white" /> },
+                  {
+                    icon: (
+                      <Image
+                        src="/mongodb.svg"
+                        width={32}
+                        height={32}
+                        alt="MongoDB"
+                      />
+                    ),
+                  },
+                  {
+                    icon: (
+                      <Image
+                        src="/javascript.svg"
+                        width={32}
+                        height={32}
+                        alt="JavaScript"
+                      />
+                    ),
+                  },
+                  {
+                    icon: (
+                      <Image
+                        src="/typescript.svg"
+                        width={32}
+                        height={32}
+                        alt="TypeScript"
+                      />
+                    ),
+                  },
+                  {
+                    icon: (
+                      <Image
+                        src="/html5.svg"
+                        width={32}
+                        height={32}
+                        alt="HTML5"
+                      />
+                    ),
+                  },
+                  {
+                    icon: (
+                      <Image
+                        src="/github.svg"
+                        width={32}
+                        height={32}
+                        alt="GitHub"
+                        className="invert"
+                      />
+                    ),
+                  },
                 ].map((item, i) => (
                   <motion.div
                     key={i}
@@ -1179,7 +1291,12 @@ export default function App() {
             {scrollingRow1.map((item, i) => (
               <div
                 key={i}
-                className="w-[350px] shrink-0 glass-panel p-6 rounded-2xl border border-white/5 hover:border-white/20 transition-colors"
+                className="w-[350px] shrink-0 bg-[#0A0F1C] p-6 rounded-2xl border border-white/5 hover:border-white/20 transition-colors shadow-lg"
+                style={{
+                  transform: "translateZ(0)",
+                  backfaceVisibility: "hidden",
+                  willChange: "transform",
+                }}
               >
                 <div className="flex gap-1 mb-4 text-yellow-500">
                   <Star className="w-4 h-4 fill-current" />
@@ -1210,7 +1327,12 @@ export default function App() {
             {scrollingRow2.map((item, i) => (
               <div
                 key={i}
-                className="w-[350px] shrink-0 glass-panel p-6 rounded-2xl border border-white/5 hover:border-white/20 transition-colors"
+                className="w-[350px] shrink-0 bg-[#0A0F1C] p-6 rounded-2xl border border-white/5 hover:border-white/20 transition-colors shadow-lg"
+                style={{
+                  transform: "translateZ(0)",
+                  backfaceVisibility: "hidden",
+                  willChange: "transform",
+                }}
               >
                 <div className="flex gap-1 mb-4 text-yellow-500">
                   <Star className="w-4 h-4 fill-current" />
@@ -1239,76 +1361,7 @@ export default function App() {
         </div>
       </section>
 
-      <section
-        id="faq"
-        className="py-24 px-6 max-w-3xl mx-auto border-t border-white/5"
-      >
-        <FadeIn className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-            Got Questions?
-          </h2>
-          <p className="text-slate-400 text-lg">
-            Everything you need to know about the platform.
-          </p>
-        </FadeIn>
-
-        <div className="space-y-4">
-          {[
-            {
-              q: "Is this platform beginner friendly?",
-              a: "Yes. Our courses are structured from fundamental concepts to advanced modules with clear, step-by-step progression.",
-            },
-            {
-              q: "Are the classes live or recorded?",
-              a: "We offer a hybrid model. The core concepts are high-quality recorded videos so you can learn at your own pace, paired with weekly live doubt-clearing sessions.",
-            },
-            {
-              q: "Do you provide a certificate?",
-              a: "Yes, upon successfully completing all modules and final projects, you receive a verified certificate that you can add to your LinkedIn profile.",
-            },
-            {
-              q: "Can teams use it for internal training?",
-              a: "Absolutely. We have specialized plans for startups and enterprises with team dashboards to track progress.",
-            },
-          ].map((faq, i) => (
-            <FadeIn delay={i * 0.1} key={i}>
-              <div
-                className={`glass-panel border rounded-2xl overflow-hidden transition-colors duration-300 ${activeFaq === i ? "border-blue-500/50 bg-blue-900/10" : "border-white/5 hover:border-white/20"}`}
-              >
-                <button
-                  onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-                  className="w-full text-left px-6 py-5 flex items-center justify-between focus:outline-none"
-                >
-                  <span className="text-white font-medium text-lg">
-                    {faq.q}
-                  </span>
-                  <motion.div
-                    animate={{ rotate: activeFaq === i ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <ChevronDown
-                      className={`w-5 h-5 ${activeFaq === i ? "text-blue-400" : "text-slate-400"}`}
-                    />
-                  </motion.div>
-                </button>
-                <AnimatePresence>
-                  {activeFaq === i && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="px-6 text-slate-400 overflow-hidden"
-                    >
-                      <div className="pb-5">{faq.a}</div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </section>
+      <FaqSection />
 
       <section className="py-24 px-6 border-t border-white/5 relative overflow-hidden bg-gradient-to-b from-transparent to-blue-950/20">
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>

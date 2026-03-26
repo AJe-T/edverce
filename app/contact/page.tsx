@@ -85,8 +85,8 @@ export default function Contact() {
               Contact us
             </h1>
             <p className="text-lg text-slate-400 max-w-2xl leading-relaxed">
-              Share your requirements and we will help you set up the right Edverce
-              workflow.
+              Share your requirements and we will help you set up the right
+              Edverce workflow.
             </p>
           </div>
 
@@ -134,7 +134,10 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="text-white font-bold mb-1">Office</h4>
-                    <p className="text-slate-400">Hyderabad, India</p>
+                    <p className="text-slate-400">
+                      WeWork,K Raheja Mindspace, Survey No. 64, Building Number
+                      9, 13th Floor, Madhapur, Hyderabad, Telangana 500081
+                    </p>
                   </div>
                 </div>
               </div>
