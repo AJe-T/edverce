@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
+import { isTeacher } from "@/lib/teacher";
 
 import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
@@ -9,14 +10,11 @@ import { columns } from "./_components/columns";
 const CouponsPage = async () => {
   const { userId } = auth();
 
-  if (!userId) {
+  if (!userId || !isTeacher(userId)) {
     return redirect("/");
   }
 
   const coupons = await db.coupon.findMany({
-    where: {
-      userId,
-    },
     include: {
       category: true,
     },

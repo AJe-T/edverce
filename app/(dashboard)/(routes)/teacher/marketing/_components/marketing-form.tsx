@@ -80,6 +80,11 @@ export const MarketingForm = ({ initialData }: { initialData: any | null }) => {
 
       {!isEditing && (
         <div className="flex flex-col gap-y-6 mt-4">
+          {initialData?.lastModifiedBy && (
+            <div className="text-xs bg-blue-50 dark:bg-blue-900/10 text-blue-700 dark:text-blue-400 px-3 py-1.5 rounded-md border border-blue-200 inline-block w-max">
+              Last Modified By: <span className="font-semibold">{initialData.lastModifiedBy}</span>
+            </div>
+          )}
           <div className="space-y-2">
             <h3 className="font-bold text-sm text-slate-500">
               Topbar Scrolling Text

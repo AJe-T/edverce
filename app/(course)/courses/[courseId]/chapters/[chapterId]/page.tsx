@@ -8,6 +8,8 @@ import { Separator } from "@/components/ui/separator";
 import { Preview } from "@/components/preview";
 import { getChapterSectionAndTitle } from "@/lib/chapter-sections";
 
+import { getProgress } from "@/actions/get-progress";
+
 import { VideoPlayer } from "./_components/video-player";
 import { CourseEnrollButton } from "./_components/course-enroll-button";
 import { CourseProgressButton } from "./_components/course-progress-button";
@@ -36,6 +38,8 @@ const ChapterIdPage = async ({
 
   const isLocked = !chapter.isFree && !purchase;
   const completeOnEnd = !!purchase && !userProgress?.isCompleted;
+  const progressCount = await getProgress(userId, params.courseId);
+  const isCourseCompleted = progressCount === 100;
   const { lessonTitle, section } = getChapterSectionAndTitle(chapter.title);
 
   return (
@@ -83,6 +87,7 @@ const ChapterIdPage = async ({
                   courseId={params.courseId}
                   nextChapterId={nextChapter?.id}
                   isCompleted={!!userProgress?.isCompleted}
+                  isCourseCompleted={isCourseCompleted}
                 />
               ) : (
                 <CourseEnrollButton

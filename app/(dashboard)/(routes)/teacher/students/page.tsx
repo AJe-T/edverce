@@ -3,19 +3,20 @@ import { redirect } from "next/navigation";
 import { Users } from "lucide-react";
 
 import { db } from "@/lib/db";
+import { isTeacher } from "@/lib/teacher";
 import { getProgress } from "@/actions/get-progress";
 import { StudentsTable } from "./_components/students-table";
 
 export default async function StudentsPage() {
   const { userId } = auth();
 
-  if (!userId) {
+  if (!userId || !isTeacher(userId)) {
     return redirect("/");
   }
 
   const courses = await db.course.findMany({
     where: {
-      userId: userId,
+      userId,
     },
     include: {
       purchases: true,
@@ -85,6 +86,9 @@ export default async function StudentsPage() {
             progress: progress || 0,
             purchasedAt,
             expiresAt,
+            price: purchaseRecord?.price ?? course.price ?? 0,
+            couponCode: purchaseRecord?.couponCode || null,
+            transactionId: purchaseRecord?.transactionId || null,
           };
         }),
       );
@@ -105,10 +109,11 @@ export default async function StudentsPage() {
         <div className="p-2 bg-blue-500/10 rounded-full">
           <Users className="h-6 w-6 text-blue-500" />
         </div>
-        <h1 className="text-2xl font-bold">Your Students</h1>
+        <h1 className="text-2xl font-bold">All Students</h1>
       </div>
 
       <StudentsTable students={students} />
     </div>
   );
 }
+

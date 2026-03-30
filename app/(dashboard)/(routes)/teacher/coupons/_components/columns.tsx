@@ -122,6 +122,18 @@ export const columns: ColumnDef<CouponWithCategory>[] = [
     },
   },
   {
+    accessorKey: "lastModifiedBy",
+    header: "Last Modified By",
+    cell: ({ row }) => {
+      const modifiedBy = (row.getValue("lastModifiedBy") as string) || "Original Creator";
+      return (
+        <span className="text-xs bg-blue-50 dark:bg-blue-900/10 text-blue-700 dark:text-blue-400 px-2 py-1 rounded-md border border-blue-200">
+          {modifiedBy}
+        </span>
+      )
+    }
+  },
+  {
     id: "actions",
     cell: ({ row }) => <ActionCell coupon={row.original} />,
   },

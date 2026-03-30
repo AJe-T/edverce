@@ -1,7 +1,10 @@
+import { clerkClient } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 import { getPhonePeOrderStatus } from "@/lib/phonepe";
+import { getPurchaseExpiryDate } from "@/lib/purchases";
+import { sendCoursePurchaseEmails } from "@/lib/resend";
 
 const createBrowserRedirectResponse = (targetUrl: URL) => {
   const destination = targetUrl.toString();
@@ -134,7 +137,16 @@ const handlePurchaseCallback = async (
       return createBrowserRedirectResponse(statusQuery);
     }
 
-    await db.purchase.upsert({
+    const existingPurchase = await db.purchase.findUnique({
+      where: {
+        userId_courseId: {
+          userId: paidUserId,
+          courseId: params.courseId,
+        },
+      },
+    });
+
+    const purchase = await db.purchase.upsert({
       where: {
         userId_courseId: {
           userId: paidUserId,
@@ -144,11 +156,47 @@ const handlePurchaseCallback = async (
       create: {
         courseId: params.courseId,
         userId: paidUserId,
+        price: paymentStatus.amount ? (paymentStatus.amount / 100) : course.price,
+        couponCode: paymentStatus.metaInfo?.udf3 || null,
+        transactionId: merchantOrderId,
       },
       update: {
         createdAt: new Date(),
+        price: paymentStatus.amount ? (paymentStatus.amount / 100) : course.price,
+        couponCode: paymentStatus.metaInfo?.udf3 || null,
+        transactionId: merchantOrderId,
       },
     });
+
+    if (existingPurchase?.transactionId !== merchantOrderId) {
+      try {
+        const learner = await clerkClient.users.getUser(paidUserId);
+        const learnerEmail =
+          learner.emailAddresses?.[0]?.emailAddress || "";
+        const learnerName =
+          `${learner.firstName || ""} ${learner.lastName || ""}`.trim() ||
+          learner.username ||
+          "Learner";
+        const expiryDate = getPurchaseExpiryDate(purchase);
+
+        if (expiryDate) {
+          await sendCoursePurchaseEmails({
+            learnerName,
+            learnerEmail,
+            courseTitle: course.title,
+            courseId: params.courseId,
+            purchasedAt: purchase.createdAt,
+            expiryDate,
+            amountPaid: purchase.price ?? course.price ?? 0,
+            listPrice: course.price ?? 0,
+            transactionId: merchantOrderId,
+            couponCode: purchase.couponCode,
+          });
+        }
+      } catch (emailError) {
+        console.log("[COURSE_ID_PURCHASE_EMAIL]", emailError);
+      }
+    }
 
     statusQuery.searchParams.set("payment", "success");
     statusQuery.searchParams.set("courseId", params.courseId);

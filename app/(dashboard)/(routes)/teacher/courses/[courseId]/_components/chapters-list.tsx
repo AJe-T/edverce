@@ -97,7 +97,14 @@ export const ChaptersList = ({
                     </div>
                     <div className="flex flex-col gap-0.5">
                       <span>{lessonTitle}</span>
-                      <span className="text-[11px] text-muted-foreground">{section}</span>
+                      <div className="flex items-center gap-x-2">
+                        <span className="text-[11px] text-muted-foreground">{section}</span>
+                        {(chapter as any).lastModifiedBy && (
+                          <span className="text-[10px] bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-1.5 py-0.5 rounded border border-blue-200 dark:border-blue-800">
+                            Mod: {(chapter as any).lastModifiedBy}
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div className="ml-auto pr-2 flex items-center gap-x-2">
                       {chapter.isFree && (
@@ -113,10 +120,13 @@ export const ChaptersList = ({
                       >
                         {chapter.isPublished ? "Published" : "Draft"}
                       </Badge>
-                      <Pencil
+                      <button
                         onClick={() => onEdit(chapter.id)}
-                        className="w-4 h-4 cursor-pointer hover:opacity-75 transition"
-                      />
+                        className="flex items-center gap-x-1.5 ml-2 px-3 py-1.5 bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-700/20 rounded-md transition font-semibold text-xs cursor-pointer"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                        Edit
+                      </button>
                     </div>
                   </div>
                 )}

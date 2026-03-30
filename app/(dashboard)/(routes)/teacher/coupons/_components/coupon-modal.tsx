@@ -148,7 +148,7 @@ export const CouponModal = ({
           if (!open) onClose();
         }}
       >
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md bg-[radial-gradient(circle_at_top_left,_rgba(14,165,233,0.18),_transparent_40%),radial-gradient(circle_at_top_right,_rgba(16,185,129,0.16),_transparent_40%),radial-gradient(circle_at_bottom_left,_rgba(14,165,233,0.12),_transparent_40%),radial-gradient(circle_at_bottom_right,_rgba(16,185,129,0.10),_transparent_40%),linear-gradient(180deg,_rgba(255,255,255,0.96),_rgba(248,250,252,0.98))] dark:border-slate-800 dark:bg-[radial-gradient(circle_at_top_left,_rgba(14,165,233,0.14),_transparent_40%),radial-gradient(circle_at_top_right,_rgba(16,185,129,0.12),_transparent_40%),radial-gradient(circle_at_bottom_left,_rgba(14,165,233,0.10),_transparent_40%),radial-gradient(circle_at_bottom_right,_rgba(16,185,129,0.08),_transparent_40%),linear-gradient(180deg,_rgba(2,6,23,0.98),_rgba(15,23,42,0.96))]">
           <DialogHeader>
             <DialogTitle>
               {initialData ? "Edit Coupon" : "Create Coupon"}

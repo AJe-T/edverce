@@ -1,25 +1,26 @@
-import { auth } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 import { getYoutubeVideoId } from "@/lib/youtube";
 import { toStoredChapterTitle } from "@/lib/chapter-sections";
+import { isTeacher } from "@/lib/teacher";
 
 export async function DELETE(
   req: Request,
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const user = await currentUser();
+    const userId = user?.id;
 
-    if (!userId) {
+    if (!userId || !isTeacher(userId)) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const ownCourse = await db.course.findUnique({
       where: {
         id: params.courseId,
-        userId,
       }
     });
 
@@ -80,17 +81,17 @@ export async function PATCH(
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const user = await currentUser();
+    const userId = user?.id;
     const { isPublished, section, ...values } = await req.json();
 
-    if (!userId) {
+    if (!userId || !isTeacher(userId)) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const ownCourse = await db.course.findUnique({
       where: {
         id: params.courseId,
-        userId
       }
     });
 
@@ -106,6 +107,8 @@ export async function PATCH(
       values.title = toStoredChapterTitle(section || "General", values.title);
     }
 
+    const lastModifiedBy = user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "Unknown";
+
     const chapter = await db.chapter.update({
       where: {
         id: params.chapterId,
@@ -113,7 +116,13 @@ export async function PATCH(
       },
       data: {
         ...values,
+        lastModifiedBy
       }
+    });
+
+    await db.course.update({
+      where: { id: params.courseId },
+      data: { lastModifiedBy }
     });
 
     if (values.videoUrl) {

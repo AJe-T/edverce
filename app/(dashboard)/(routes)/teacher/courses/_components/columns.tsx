@@ -80,6 +80,28 @@ export const columns: ColumnDef<Course>[] = [
     }
   },
   {
+    accessorKey: "lastModifiedBy",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Last Modified By
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const modifiedBy = (row.getValue("lastModifiedBy") as string) || "Original";
+      return (
+        <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/10 text-blue-700 dark:text-blue-400">
+          {modifiedBy}
+        </Badge>
+      )
+    }
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       const { id } = row.original;

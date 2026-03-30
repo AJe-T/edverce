@@ -1,31 +1,40 @@
-import { auth } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 import { toStoredChapterTitle } from "@/lib/chapter-sections";
+import { isTeacher } from "@/lib/teacher";
 
 export async function POST(
   req: Request,
   { params }: { params: { courseId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const user = await currentUser();
+    const userId = user?.id;
     const { title, section } = await req.json();
 
-    if (!userId) {
+    if (!userId || !isTeacher(userId)) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
+
+    const lastModifiedBy = user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "Unknown";
 
     const courseOwner = await db.course.findUnique({
       where: {
         id: params.courseId,
-        userId: userId,
       }
     });
 
     if (!courseOwner) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
+
+    // Ensure we track who last modified the entire course too
+    await db.course.update({
+      where: { id: params.courseId },
+      data: { lastModifiedBy }
+    });
 
     const lastChapter = await db.chapter.findFirst({
       where: {
@@ -43,6 +52,7 @@ export async function POST(
         title: toStoredChapterTitle(section || "General", title),
         courseId: params.courseId,
         position: newPosition,
+        lastModifiedBy,
       }
     });
 

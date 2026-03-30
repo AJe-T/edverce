@@ -5,6 +5,7 @@ import crypto from "crypto";
 import { calculateCourseCheckoutAmounts } from "@/lib/course-pricing";
 import { db } from "@/lib/db";
 import { createPhonePePayment, getPhonePeRedirectUrl } from "@/lib/phonepe";
+import { findActivePurchase } from "@/lib/purchases";
 import { quoteCoupon } from "@/lib/coupons";
 
 export async function POST(
@@ -32,22 +33,10 @@ export async function POST(
       return new NextResponse("Not found", { status: 404 });
     }
 
-    let purchase = await db.purchase.findUnique({
-      where: {
-        userId_courseId: {
-          userId: user.id,
-          courseId: params.courseId,
-        },
-      },
+    const purchase = await findActivePurchase({
+      userId: user.id,
+      courseId: params.courseId,
     });
-
-    if (purchase) {
-      const threeMonthsAgo = new Date();
-      threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-      if (purchase.createdAt < threeMonthsAgo) {
-        purchase = null;
-      }
-    }
 
     if (purchase) {
       return new NextResponse("Already purchased", { status: 400 });
@@ -80,6 +69,7 @@ export async function POST(
       redirectUrl: callbackUrl,
       courseId: course.id,
       userId: user.id,
+      couponCode: body?.couponCode,
     });
     const redirectUrl = getPhonePeRedirectUrl(phonePeOrder);
 

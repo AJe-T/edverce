@@ -16,7 +16,6 @@ const SignaturesPage = async () => {
   }
 
   const courses = await db.course.findMany({
-    where: { userId },
     orderBy: { title: "asc" },
   });
 

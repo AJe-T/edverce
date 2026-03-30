@@ -1,15 +1,17 @@
-import { auth } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
+import { isTeacher } from "@/lib/teacher";
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    const user = await currentUser();
+    const userId = user?.id;
     const { code, discountPercentage, fromDate, toDate, categoryId, limit } =
       await req.json();
 
-    if (!userId) {
+    if (!userId || !isTeacher(userId)) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -25,6 +27,8 @@ export async function POST(req: Request) {
       return new NextResponse("Coupon code already exists", { status: 400 });
     }
 
+    const lastModifiedBy = user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "Unknown";
+
     const coupon = await db.coupon.create({
       data: {
         userId,
@@ -34,6 +38,7 @@ export async function POST(req: Request) {
         toDate: new Date(toDate),
         categoryId: categoryId || null,
         limit: limit ? parseInt(limit, 10) : null,
+        lastModifiedBy,
       },
     });
 
@@ -48,14 +53,11 @@ export async function GET(req: Request) {
   try {
     const { userId } = auth();
 
-    if (!userId) {
+    if (!userId || !isTeacher(userId)) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const coupons = await db.coupon.findMany({
-      where: {
-        userId,
-      },
       include: {
         category: true,
       },
@@ -70,3 +72,4 @@ export async function GET(req: Request) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+

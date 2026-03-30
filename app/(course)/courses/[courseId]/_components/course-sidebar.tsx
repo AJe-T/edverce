@@ -3,6 +3,7 @@ import { Chapter, Course, UserProgress } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
+import { findActivePurchase } from "@/lib/purchases";
 import { CourseProgress } from "@/components/course-progress";
 import { getChapterSectionAndTitle } from "@/lib/chapter-sections";
 
@@ -27,22 +28,10 @@ export const CourseSidebar = async ({
     return redirect("/");
   }
 
-  let purchase = await db.purchase.findUnique({
-    where: {
-      userId_courseId: {
-        userId,
-        courseId: course.id,
-      },
-    },
+  const purchase = await findActivePurchase({
+    userId,
+    courseId: course.id,
   });
-
-  if (purchase) {
-    const threeMonthsAgo = new Date();
-    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-    if (purchase.createdAt < threeMonthsAgo) {
-      purchase = null;
-    }
-  }
 
   const sectionMap = new Map<
     string,

@@ -5,6 +5,7 @@ import { BookOpen, Clock3, Layers, Sparkles, Star } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { getChapterSectionAndTitle } from "@/lib/chapter-sections";
+import { findActivePurchase } from "@/lib/purchases";
 
 import { CourseIntroCheckout } from "./_components/course-intro-checkout";
 
@@ -41,22 +42,10 @@ const CoursePreviewPage = async ({
     return redirect("/search");
   }
 
-  let purchase = await db.purchase.findUnique({
-    where: {
-      userId_courseId: {
-        userId,
-        courseId: course.id,
-      },
-    },
+  const purchase = await findActivePurchase({
+    userId,
+    courseId: course.id,
   });
-
-  if (purchase) {
-    const threeMonthsAgo = new Date();
-    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-    if (purchase.createdAt < threeMonthsAgo) {
-      purchase = null;
-    }
-  }
 
   if (purchase) {
     return redirect(`/courses/${course.id}`);

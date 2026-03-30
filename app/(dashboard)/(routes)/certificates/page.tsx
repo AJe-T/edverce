@@ -2,7 +2,6 @@ import { auth } from "@clerk/nextjs";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Award, Download, CheckCircle, SearchX } from "lucide-react";
-import Image from "next/image";
 
 import { getDashboardCourses } from "@/actions/get-dashboard-courses";
 

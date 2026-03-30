@@ -67,6 +67,11 @@ const teacherRoutes = [
     href: "/teacher/students",
   },
   {
+    icon: Users,
+    label: "New Users",
+    href: "/teacher/new-users",
+  },
+  {
     icon: MessageSquare,
     label: "Queries",
     href: "/teacher/queries",

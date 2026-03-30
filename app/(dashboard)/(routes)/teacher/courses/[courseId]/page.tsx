@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { CircleDollarSign, File, LayoutDashboard, ListChecks } from "lucide-react";
 
 import { db } from "@/lib/db";
+import { isTeacher } from "@/lib/teacher";
 import { IconBadge } from "@/components/icon-badge";
 import { Banner } from "@/components/banner";
 
@@ -22,7 +23,7 @@ const CourseIdPage = async ({
 }) => {
   const { userId } = auth();
 
-  if (!userId) {
+  if (!userId || !isTeacher(userId)) {
     return redirect("/");
   }
 
@@ -30,7 +31,6 @@ const CourseIdPage = async ({
     db.course.findUnique({
       where: {
         id: params.courseId,
-        userId
       },
       include: {
         chapters: {

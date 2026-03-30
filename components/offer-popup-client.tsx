@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 export const OfferPopupClient = ({ setting }: { setting: any }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -50,11 +51,15 @@ export const OfferPopupClient = ({ setting }: { setting: any }) => {
             />
           </svg>
         </button>
-        <img
-          src={setting.popupImageUrl}
-          alt="Special Offer"
-          className="w-full h-full max-h-[85vh] object-contain rounded-2xl"
-        />
+        <div className="relative w-full max-h-[85vh] aspect-video">
+          <Image
+            src={setting.popupImageUrl}
+            alt="Special Offer"
+            fill
+            className="object-contain rounded-2xl"
+            unoptimized
+          />
+        </div>
       </div>
     </div>
   );

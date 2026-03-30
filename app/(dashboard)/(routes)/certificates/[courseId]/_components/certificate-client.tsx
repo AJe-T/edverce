@@ -4,6 +4,9 @@ import { Download, Medal } from "lucide-react";
 import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import Image from "next/image";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface CertificateData {
   studentName: string;
@@ -12,23 +15,50 @@ interface CertificateData {
   certificateId: string;
   instructorName: string;
   instructorSignature: string;
+  instructorSignatureUrl?: string | null;
   instructorRole: string;
 }
 
 export const CertificateClient = ({
   certData,
+  courseId,
+  enforceDownloadLimit,
+  remainingDownloads,
+  supportEmail,
 }: {
   certData: CertificateData;
+  courseId: string;
+  enforceDownloadLimit: boolean;
+  remainingDownloads: number;
+  supportEmail: string;
 }) => {
   const certificateRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadsLeft, setDownloadsLeft] = useState(remainingDownloads);
 
   const handlePrint = async () => {
     const certificateElement = certificateRef.current;
     if (!certificateElement) return;
 
+    if (enforceDownloadLimit && downloadsLeft <= 0) {
+      toast.error(
+        `You have used all 5 certificate downloads. Please contact ${supportEmail} for access.`,
+      );
+      return;
+    }
+
     try {
       setIsDownloading(true);
+
+      let updatedDownloadsLeft = downloadsLeft;
+
+      if (enforceDownloadLimit) {
+        const response = await axios.post(
+          `/api/certificates/${courseId}/download`,
+        );
+        updatedDownloadsLeft = response.data.remainingDownloads;
+        setDownloadsLeft(updatedDownloadsLeft);
+      }
 
       const originalBorder = certificateElement.style.border;
       certificateElement.style.border = "none";
@@ -57,8 +87,23 @@ export const CertificateClient = ({
 
       pdf.addImage(imgData, "PNG", 0, Math.max(0, yPos), pdfWidth, pdfHeight);
       pdf.save(`${certData.studentName.replaceAll(/\s+/g, "_")}_Certificate.pdf`);
+      if (enforceDownloadLimit) {
+        toast.success(
+          updatedDownloadsLeft > 0
+            ? `${updatedDownloadsLeft} certificate downloads remaining`
+            : "This was your last certificate download",
+        );
+      }
     } catch (error) {
       console.error("Error generating PDF", error);
+      if (axios.isAxiosError(error)) {
+        toast.error(
+          error.response?.data?.message ||
+            "Unable to download certificate right now.",
+        );
+      } else {
+        toast.error("Unable to generate certificate PDF.");
+      }
     } finally {
       setIsDownloading(false);
     }
@@ -93,16 +138,31 @@ export const CertificateClient = ({
         }}
       />
       <div className="w-full max-w-5xl flex flex-col sm:flex-row items-center justify-between mb-8 print-hidden bg-white/50 dark:bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-white/5 shadow-md relative z-20">
-        <div className="text-slate-600 dark:text-slate-300 font-medium mb-4 sm:mb-0">
-          Certificate ID:{" "}
-          <span className="text-slate-900 dark:text-white font-mono">
-            {certData.certificateId}
-          </span>
+        <div className="text-slate-600 dark:text-slate-300 font-medium mb-4 sm:mb-0 space-y-1">
+          <div>
+            Certificate ID:{" "}
+            <span className="text-slate-900 dark:text-white font-mono">
+              {certData.certificateId}
+            </span>
+          </div>
+          {enforceDownloadLimit ? (
+            downloadsLeft > 0 ? (
+              <p className="text-xs text-muted-foreground">
+                You can download this certificate {downloadsLeft} more{" "}
+                {downloadsLeft === 1 ? "time" : "times"}.
+              </p>
+            ) : (
+              <p className="text-xs text-amber-600 dark:text-amber-400">
+                Download limit reached. Contact {supportEmail} to get download
+                access again.
+              </p>
+            )
+          ) : null}
         </div>
         <div className="flex gap-4">
           <button
             onClick={handlePrint}
-            disabled={isDownloading}
+            disabled={isDownloading || (enforceDownloadLimit && downloadsLeft <= 0)}
             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-5 py-2.5 rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)]"
           >
             <Download className="w-4 h-4" />{" "}
@@ -129,11 +189,13 @@ export const CertificateClient = ({
 
               <div className="relative z-10 w-full flex flex-col items-center">
                 <div className="flex items-center justify-center mb-12">
-                  <img
+                  <Image
                     src="/Logo.png"
                     alt="EdVerce Logo"
-                    width="240"
+                    width={240}
+                    height={70}
                     style={{ objectFit: "contain", maxHeight: "70px" }}
+                    unoptimized
                   />
                 </div>
 
@@ -176,14 +238,26 @@ export const CertificateClient = ({
                   </div>
 
                   <div className="flex flex-col items-center">
-                    <span
-                      style={{
-                        fontFamily: "'Brush Script MT', cursive, serif",
-                      }}
-                      className="text-blue-200 text-4xl border-b border-white/20 pb-2 mb-2 px-8 opacity-90"
-                    >
-                      {certData.instructorSignature}
-                    </span>
+                    {certData.instructorSignatureUrl ? (
+                      <div className="relative w-40 h-14 border-b border-white/20 pb-2 mb-2 px-8">
+                        <Image
+                          src={certData.instructorSignatureUrl}
+                          alt="Instructor Signature"
+                          fill
+                          className="object-contain"
+                          unoptimized
+                        />
+                      </div>
+                    ) : (
+                      <span
+                        style={{
+                          fontFamily: "'Brush Script MT', cursive, serif",
+                        }}
+                        className="text-blue-200 text-4xl border-b border-white/20 pb-2 mb-2 px-8 opacity-90"
+                      >
+                        {certData.instructorSignature}
+                      </span>
+                    )}
                     <span className="text-slate-500 text-sm uppercase tracking-wider font-bold">
                       {certData.instructorRole}
                     </span>

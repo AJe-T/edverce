@@ -7,8 +7,10 @@ import {
   Search,
   ChevronLeft,
   ChevronRight,
+  Receipt,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -24,6 +26,9 @@ interface StudentTableProps {
       progress: number;
       purchasedAt: Date | null;
       expiresAt: Date | null;
+      price: number;
+      couponCode: string | null;
+      transactionId: string | null;
     }[];
   }[];
 }
@@ -101,10 +106,13 @@ export const StudentsTable = ({ students }: StudentTableProps) => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
                       {student.imageUrl ? (
-                        <img
+                        <Image
                           src={student.imageUrl}
                           alt={student.name}
+                          width={32}
+                          height={32}
                           className="w-8 h-8 rounded-full border border-white/10"
+                          unoptimized
                         />
                       ) : (
                         <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-medium">
@@ -193,11 +201,35 @@ export const StudentsTable = ({ students }: StudentTableProps) => {
                                   <Download className="w-4 h-4 text-blue-500 group-hover:text-blue-600" />
                                 </div>
                               </Link>
+                              {course.transactionId ? (
+                                <Link
+                                  href={`/invoices/${course.id}?studentId=${student.id}`}
+                                  target="_blank"
+                                  title="Download Invoice"
+                                >
+                                  <div className="p-1.5 bg-emerald-600/10 hover:bg-emerald-600/20 rounded-md transition-colors cursor-pointer group">
+                                    <Receipt className="w-4 h-4 text-emerald-600 group-hover:text-emerald-700" />
+                                  </div>
+                                </Link>
+                              ) : null}
                             </div>
                           ) : (
-                            <span className="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">
-                              {Math.round(course.progress)}%
-                            </span>
+                            <div className="flex items-center gap-x-3">
+                              <span className="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">
+                                {Math.round(course.progress)}%
+                              </span>
+                              {course.transactionId ? (
+                                <Link
+                                  href={`/invoices/${course.id}?studentId=${student.id}`}
+                                  target="_blank"
+                                  title="Download Invoice"
+                                >
+                                  <div className="p-1.5 bg-emerald-600/10 hover:bg-emerald-600/20 rounded-md transition-colors cursor-pointer group">
+                                    <Receipt className="w-4 h-4 text-emerald-600 group-hover:text-emerald-700" />
+                                  </div>
+                                </Link>
+                              ) : null}
+                            </div>
                           )}
                         </div>
                       ))}

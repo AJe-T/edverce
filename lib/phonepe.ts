@@ -11,6 +11,7 @@ type CreatePhonePePaymentInput = {
   redirectUrl: string;
   courseId: string;
   userId: string;
+  couponCode?: string;
 };
 
 export type PhonePeCreatePaymentResponse = {
@@ -146,6 +147,7 @@ export const createPhonePePayment = async (
     metaInfo: {
       udf1: input.userId,
       udf2: input.courseId,
+      udf3: input.couponCode || "",
     },
   };
 
@@ -177,6 +179,7 @@ export const getPhonePeOrderStatus = async (merchantOrderId: string) => {
     metaInfo?: {
       udf1?: string;
       udf2?: string;
+      udf3?: string;
     };
   }>(`/checkout/v2/order/${encodeURIComponent(merchantOrderId)}/status?details=true`);
 };

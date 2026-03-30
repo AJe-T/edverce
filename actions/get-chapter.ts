@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { findActivePurchase } from "@/lib/purchases";
 import { Attachment, Chapter } from "@prisma/client";
 
 interface GetChapterProps {
@@ -13,22 +14,10 @@ export const getChapter = async ({
   chapterId,
 }: GetChapterProps) => {
   try {
-    let purchase = await db.purchase.findUnique({
-      where: {
-        userId_courseId: {
-          userId,
-          courseId,
-        },
-      },
+    const purchase = await findActivePurchase({
+      userId,
+      courseId,
     });
-
-    if (purchase) {
-      const threeMonthsAgo = new Date();
-      threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-      if (purchase.createdAt < threeMonthsAgo) {
-        purchase = null;
-      }
-    }
 
     const course = await db.course.findUnique({
       where: {

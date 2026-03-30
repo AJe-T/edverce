@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { findActivePurchase } from "@/lib/purchases";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
@@ -29,22 +30,10 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
     return redirect("/");
   }
 
-  let purchase = await db.purchase.findUnique({
-    where: {
-      userId_courseId: {
-        userId,
-        courseId: course.id,
-      },
-    },
+  const purchase = await findActivePurchase({
+    userId,
+    courseId: course.id,
   });
-
-  if (purchase) {
-    const threeMonthsAgo = new Date();
-    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-    if (purchase.createdAt < threeMonthsAgo) {
-      purchase = null;
-    }
-  }
 
   if (!purchase) {
     return redirect(`/course-preview/${course.id}`);

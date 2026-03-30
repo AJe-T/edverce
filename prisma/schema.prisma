@@ -16,6 +16,7 @@ model Course {
   price Float?
   isPublished Boolean @default(false)
   certificateSignature String? @db.Text
+  certificateSignatureUrl String? @db.Text
 
   categoryId String?
   category Category? @relation(fields: [categoryId], references: [id])
@@ -26,6 +27,7 @@ model Course {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  lastModifiedBy String?
 
   @@index([categoryId])
 }
@@ -69,6 +71,7 @@ model Chapter {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  lastModifiedBy String?
 
   @@index([courseId])
 }
@@ -105,6 +108,13 @@ model Purchase {
   courseId String
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
+  price Float?
+  couponCode String?
+  transactionId String?
+  certificateDownloadCount Int @default(0)
+  certificateRecipientName String?
+  certificateIssuedAt DateTime?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
@@ -135,6 +145,7 @@ model Coupon {
 
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
+  lastModifiedBy     String?
 
   @@index([categoryId])
 }
@@ -145,6 +156,7 @@ model MarketingSetting {
   popupTitle String?
   popupImageUrl String? @db.Text
   popupIsActive Boolean @default(false)
+  lastModifiedBy String?
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

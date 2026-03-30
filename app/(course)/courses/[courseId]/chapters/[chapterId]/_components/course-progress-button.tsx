@@ -14,13 +14,15 @@ interface CourseProgressButtonProps {
   courseId: string;
   isCompleted?: boolean;
   nextChapterId?: string;
+  isCourseCompleted?: boolean;
 };
 
 export const CourseProgressButton = ({
   chapterId,
   courseId,
   isCompleted,
-  nextChapterId
+  nextChapterId,
+  isCourseCompleted
 }: CourseProgressButtonProps) => {
   const router = useRouter();
   const confetti = useConfettiStore();
@@ -50,6 +52,8 @@ export const CourseProgressButton = ({
       setIsLoading(false);
     }
   }
+
+  if (isCourseCompleted && isCompleted) return null;
 
   const Icon = isCompleted ? XCircle : CheckCircle
 

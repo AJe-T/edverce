@@ -1,29 +1,32 @@
-import { auth } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
+import { isTeacher } from "@/lib/teacher";
 
 export async function PATCH(
   req: Request,
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const user = await currentUser();
+    const userId = user?.id;
 
-    if (!userId) {
+    if (!userId || !isTeacher(userId)) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const ownCourse = await db.course.findUnique({
       where: {
         id: params.courseId,
-        userId
       }
     });
 
     if (!ownCourse) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
+
+    const lastModifiedBy = user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "Unknown";
 
     const unpublishedChapter = await db.chapter.update({
       where: {
@@ -32,6 +35,7 @@ export async function PATCH(
       },
       data: {
         isPublished: false,
+        lastModifiedBy,
       }
     });
 
@@ -49,6 +53,7 @@ export async function PATCH(
         },
         data: {
           isPublished: false,
+          lastModifiedBy,
         }
       });
     }
